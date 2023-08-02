@@ -5,7 +5,7 @@
 If your README is long, add a table of contents to make it easy for users to find what they need.
 
 - [Installation](#installation)
-- [Notes over Structure](#notes-over-structure)
+- [Notes over structure](#notes-over-structure)
 - [Common Issues](#common-issues)
 
 
@@ -32,7 +32,7 @@ If your README is long, add a table of contents to make it easy for users to fin
     ```
 
 
-## Current Plan
+## Notes over structure
 
 ![Example Image](./web-quiz-plan.png)
 
