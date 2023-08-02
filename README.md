@@ -28,7 +28,7 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 4. Create a .env file in the recurse-quiz-app directory and enter this on the first line
     ```shell
-   SECRET_KEY=<randomcharacters>
+   SECRET_KEY=randomcharacters
     ```
 4. To start the server:
     ```shell
