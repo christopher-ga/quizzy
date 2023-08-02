@@ -5,6 +5,7 @@
 If your README is long, add a table of contents to make it easy for users to find what they need.
 
 - [Installation](#installation)
+- [Notes over Structure](#notes-over-structure)
 - [Issues](#issues)
 
 ## Installation
@@ -27,6 +28,12 @@ If your README is long, add a table of contents to make it easy for users to fin
     ```shell
     flask run
     ```
+
+## Notes over Structure
+
+
+
+
 
 ## Issues
 
