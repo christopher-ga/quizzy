@@ -5,7 +5,7 @@
 If your README is long, add a table of contents to make it easy for users to find what they need.
 
 - [Installation](#installation)
-- [Notes over Structure](#notes-over-structure)
+- [Notes over structure](#notes-over-structure)
 - [Common Issues](#common-issues)
 
 
@@ -26,13 +26,24 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 ```TODO: Add commands for upgrading the database & seeding```
 
-4. To start the server:
+4. Create a .env file in the recurse-quiz-app directory and enter this on the first line
+    ```shell
+   SECRET_KEY=randomcharacters
+    ```
+4. To start the server use command line:
+    ```shell
+    python3 wsgi.py
+    ```
+
+    OR 
+
     ```shell
     flask run
     ```
 
+    Though it is recommended to use python3 wsgi.py as this will be used in production
 
-## Current Plan
+## Notes over structure
 
 ![Example Image](./web-quiz-plan.png)
 
