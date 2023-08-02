@@ -6,7 +6,7 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 - [Installation](#installation)
 - [Notes over Structure](#notes-over-structure)
-- [Issues](#issues)
+- [Common Issues](#common-issues)
 
 
 
@@ -38,7 +38,7 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 
 
-## Issues
+## Common Issues
 
 In case of Pylance import errors on VSCode, try:
 1. Run:
