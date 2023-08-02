@@ -41,7 +41,7 @@ If your README is long, add a table of contents to make it easy for users to fin
     flask run
     ```
 
-    Though it is reccommended to use python3 wsgi.py as this will be used in production
+    Though it is recommended to use python3 wsgi.py as this will be used in production
 
 ## Notes over structure
 
