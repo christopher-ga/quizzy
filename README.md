@@ -30,11 +30,18 @@ If your README is long, add a table of contents to make it easy for users to fin
     ```shell
    SECRET_KEY=randomcharacters
     ```
-4. To start the server:
+4. To start the server use command line:
+    ```shell
+    python3 wsgi.py
+    ```
+
+    OR 
+
     ```shell
     flask run
     ```
 
+    Though it is reccommended to use wsgi.py as this what will be used in production
 
 ## Notes over structure
 
