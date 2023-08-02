@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{# injecting styles into base.html#}
+{% block head %}
+<link rel="stylesheet" href="../../static/style/join_game_page.css">
+{% endblock %}
+
+
+{% block container %}
+
+    <div>
+
+        <p class="test">join_game_page</p>
+
+        <form method="POST" action="/">
+            <label>Name:</label>
+            <input type="text" placeholder="enter a name" name="name">
+            <button type="submit" name="join">join demonstration room</button>
+        </form>
+    </div>
+
+
+    {% if error %}
+
+        <ul>
+            <li>{{ error }}</li>
+        </ul>
+
+    {% endif %}
+
+{% endblock %}

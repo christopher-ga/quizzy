@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block container %}
+
+    <div>sockets room</div>
+
+    <script>
+        let socket = io();
+
+        //when the socket connection is established, do this for client
+        socket.on('connect', () => {
+            console.log('You just connected to the socket server!')
+        })
+
+        //when the client receives the custom event user_disconnected, do this for client
+        socket.on('user_disconnected', (data) => {
+            console.log(data.message)
+        })
+
+    </script>
+
+{% endblock %}
