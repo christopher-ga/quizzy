@@ -8,6 +8,8 @@ If your README is long, add a table of contents to make it easy for users to fin
 - [Notes over Structure](#notes-over-structure)
 - [Issues](#issues)
 
+
+
 ## Installation
 1. Install python & pipenv
   - pip installation might be required as well
@@ -29,9 +31,11 @@ If your README is long, add a table of contents to make it easy for users to fin
     flask run
     ```
 
-## Notes over Structure
+
+## Current Plan
 
 ![Example Image](./web-quiz-plan.png)
+
 
 
 ## Issues
