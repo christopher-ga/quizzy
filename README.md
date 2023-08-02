@@ -1,5 +1,12 @@
 # recurse-quiz-app
 
+## Table of Contents (Optional)
+
+If your README is long, add a table of contents to make it easy for users to find what they need.
+
+- [Installation](#installation)
+- [Issues](#issues)
+
 ## Installation
 1. Install python & pipenv
   - pip installation might be required as well
@@ -21,7 +28,7 @@
     flask run
     ```
 
-## Common Issues
+## Issues
 
 In case of Pylance import errors on VSCode, try:
 1. Run:
