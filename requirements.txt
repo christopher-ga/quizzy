@@ -8,3 +8,4 @@ gunicorn==20.1.0
 python-dotenv==0.21.0
 sqlalchemy==1.4.46
 wtforms==3.0.1
+flask_socketio===5.3.5
