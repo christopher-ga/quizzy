@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block head %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
+{% endblock %}
+
+{% block container %}
+    <div class="quiz-container">
+        <h1>{{ quiz_title }}</h1>
+        <form method="POST" action="{{ url_for('question_page.submit_quiz') }}">
+            {% for question in questions %}
+            <div class="question">
+                <p>{{ question.question_text }}</p>
+                <div class="answers-container">
+                    {% for choice in question.choices %}
+                    <label>
+                        <input type="radio" name="{{ question.id }}" value="{{ choice.id }}" class="answer-btn">
+                        <span class="btn-text">{{ choice.choice_text }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            <button type="submit">Submit Quiz</button>
+        </form>
+    </div>
+{% endblock %}
