@@ -38,7 +38,7 @@ questions = [
 #     }
 ]
 
-@question_page.route('/')
+@question_page.route('/', methods=["POST", "GET"])
 def quiz():
     return render_template('game/question_page.html', quiz_title=quiz_title, questions=questions)
 

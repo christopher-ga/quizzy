@@ -12,6 +12,7 @@
             {% for question in questions %}
             <div class="question mb-4">
                 <h1 align="center">{{ question.question_text }}</h1>
+                <hr>
                 <div class="row">
                     {% for choice in question.choices %}
                     <div class="col-6 g-2">
