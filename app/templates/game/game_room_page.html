@@ -5,7 +5,7 @@
 
     <div>sockets room</div>
 
-    <h3 class="text-primary">Hi, {{session["name"]}}! </h3>
+    <h3 class="text-primary">Welcome, {{session["name"]}}! </h3>
 
     <script>
         let socket = io();
@@ -21,5 +21,10 @@
         })
 
     </script>
+<div align="center">
+    <form method="POST" action="{{ url_for('question_page.quiz') }}">
+        <button type="submit" class="btn btn-primary align-items-center">Start</button>
+    </form>
+</div>
 
 {% endblock %}
