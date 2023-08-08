@@ -38,6 +38,18 @@ questions = [
 
         ],
         "correct": "c"
+},
+{
+        "id": 3,
+        "question_text": "How many apples did Celina eat",
+        "choices": [
+            {"id": "a", "choice_text": "1"},
+            {"id": "b", "choice_text": "Too many"},
+            {"id": "c", "choice_text": "6"},
+            {"id": "c", "choice_text": "5"},
+
+        ],
+        "correct": "a"
 }
 ]
 
