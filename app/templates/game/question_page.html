@@ -1,27 +1,34 @@
 {% extends 'base.html' %}
 {% block head %}
+<style>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
+        input[type="radio"]{
+        display: none;
+        }
+    </style>
 {% endblock %}
-
 {% block container %}
-    <div class="quiz-container">
-        <h1>{{ quiz_title }}</h1>
         <form method="POST" action="{{ url_for('question_page.submit_quiz') }}">
             {% for question in questions %}
-            <div class="question">
-                <p>{{ question.question_text }}</p>
-                <div class="answers-container">
+            <div class="question mb-4">
+                <h1 align="center">{{ question.question_text }}</h1>
+                <hr>
+                <div class="row">
                     {% for choice in question.choices %}
-                    <label>
-                        <input type="radio" name="{{ question.id }}" value="{{ choice.id }}" class="answer-btn">
-                        <span class="btn-text">{{ choice.choice_text }}</span>
-                    </label>
+                    <div class="col-6 g-2">
+                        <label class="btn btn-primary d-flex align-items-center justify-content-center">
+                            <input type="radio" name="{{ question.id }}" value="{{ choice.id }}" class="answer-btn">
+                            {{ choice.choice_text }}
+                        </label>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
             {% endfor %}
-            <button type="submit">Submit Quiz</button>
+            <div align="center">
+            <button type="submit" class="btn btn-primary align-items-center" >Submit Quiz</button>
+            </div>
         </form>
-    </div>
+
 {% endblock %}
+

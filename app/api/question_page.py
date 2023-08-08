@@ -5,7 +5,7 @@ question_page = Blueprint('question_page', __name__)
 
 
 # Sample quiz data
-quiz_title = "My Awesome Quiz"
+quiz_title = "My Even More Awesome Quiz"
 questions = [
     {
         "id": 1,
@@ -14,12 +14,31 @@ questions = [
             {"id": "a", "choice_text": "3"},
             {"id": "b", "choice_text": "4"},
             {"id": "c", "choice_text": "5"},
+            {"id": "d", "choice_text": "6"},
         ],
     },
-    # Add more questions here...
+#     {
+#         "id": 2,
+#         "question_text": "What is 1 + 2?",
+#         "choices": [
+#             {"id": "a", "choice_text": "3"},
+#             {"id": "b", "choice_text": "4"},
+#             {"id": "c", "choice_text": "5"},
+#         ],
+#     },
+# {
+#         "id": 3,
+#         "question_text": "What is 3 + 2?",
+#         "choices": [
+#             {"id": "a", "choice_text": "3"},
+#             {"id": "b", "choice_text": "4"},
+#             {"id": "c", "choice_text": "5"},
+
+#         ],
+#     }
 ]
 
-@question_page.route('/')
+@question_page.route('/', methods=["POST", "GET"])
 def quiz():
     return render_template('game/question_page.html', quiz_title=quiz_title, questions=questions)
 
