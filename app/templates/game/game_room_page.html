@@ -3,9 +3,11 @@
 
 {% block container %}
 
-    <div>sockets room</div>
+    <div align="center">sockets room
 
     <h3 class="text-primary">Welcome, {{session["name"]}}! </h3>
+    <h4>Waiting for other players</h4>
+    <h4>Game starting soon...</h4>
 
     <script>
         let socket = io();
@@ -26,5 +28,10 @@
         <button type="submit" class="btn btn-primary align-items-center">Start</button>
     </form>
 </div>
-
+        <hr>
+<h2 class="text-primary">Players who already joined:</h2>
+{% for user in usernames%}
+        <p> {{user}} </p>
+        {% endfor %}
+</div>
 {% endblock %}

@@ -27,6 +27,7 @@ def join_view():
             return render_template('game/join_game_page.html', error='Please provide a name')
 
         session["name"] = name
+        session["score"] = 0
 
         return redirect(url_for('game_room_page.join_view'))
 
