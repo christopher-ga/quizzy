@@ -9,24 +9,17 @@
 {% endblock %}
 {% block container %}
         <form method="POST" action="{{ url_for('question_page.submit_quiz') }}">
-            {% for question in questions %}
             <div class="question mb-4">
                 <h1 align="center">{{ question.question_text }}</h1>
                 <hr>
                 <div class="row">
                     {% for choice in question.choices %}
                     <div class="col-6 g-2">
-                        <label class="btn btn-primary d-flex align-items-center justify-content-center">
-                            <input type="radio" name="{{ question.id }}" value="{{ choice.id }}" class="answer-btn">
-                            {{ choice.choice_text }}
-                        </label>
+                            <button class="btn btn-primary btn-lg d-flex align-items-center justify-content-center w-100" type="submit" name="{{ question.id }}" value="{{ choice.id }}">
+                                {{ choice.choice_text }}</button>
                     </div>
                     {% endfor %}
                 </div>
-            </div>
-            {% endfor %}
-            <div align="center">
-            <button type="submit" class="btn btn-primary align-items-center" >Submit Quiz</button>
             </div>
         </form>
 

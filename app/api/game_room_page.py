@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template, request
+from app.socket_events import usernames
+
 
 
 # game_room blueprint for main game room of quiz game
@@ -10,6 +12,6 @@ game_room_page = Blueprint('game_room_page', __name__)
 
 @game_room_page.route('/', methods=['POST', 'GET'])
 def join_view():
-    return render_template('game/game_room_page.html')
+    return render_template('game/game_room_page.html', usernames=usernames)
 
 
