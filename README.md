@@ -35,14 +35,6 @@ If your README is long, add a table of contents to make it easy for users to fin
     python3 wsgi.py
     ```
 
-    OR 
-
-    ```shell
-    flask run
-    ```
-
-    Though it is recommended to use python3 wsgi.py as this will be used in production
-
 ## Notes over structure
 
 ![Example Image](./web-quiz-plan.png)
