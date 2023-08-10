@@ -1,5 +1,8 @@
-from flask_socketio import send
+import eventlet
+from flask_socketio import send, join_room
 from flask import request, session
+
+eventlet.monkey_patch()
 
 users = []
 usernames = set()
@@ -26,8 +29,16 @@ def handle_delete_user(socket_id):
             target_user = users[i]
             del users[i]
 
-    usernames.discard(target_user['username'])
+    usernames.discard(target_user['username'].lower())
     return target_user
+
+
+def start_timer(socketio):
+    t = 10
+    while t:
+        eventlet.sleep(1)
+        t -= 1
+        socketio.emit('room_filled', t)
 
 
 def define_socket_events(socketio):
@@ -42,6 +53,11 @@ def define_socket_events(socketio):
         handle_add_user(session['name'], request.sid)
         print(users)
         print(usernames)
+
+        # when there are two users in the game_room_page, start a timer
+        if len(users) == 2:
+            print('2 users on now')
+            eventlet.spawn(start_timer, socketio)
 
     # when a user disconnects from the socket do the following
     @socketio.on('disconnect')
