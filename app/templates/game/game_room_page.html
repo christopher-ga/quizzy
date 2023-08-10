@@ -7,7 +7,7 @@
 
     <h3 class="text-primary">Welcome, {{session["name"]}}! </h3>
     <h4>Waiting for other players</h4>
-    <h4>Game starting soon...</h4>
+    <h4 class="gameStatus">Game starting soon...</h4>
 
     <script>
         let socket = io();
@@ -22,7 +22,16 @@
             console.log(data.message)
         })
 
+        socket.on('room_filled', (data) => {
+
+            let timer = document.querySelector('.gameStatus')
+            timer.innerHTML = data;
+            console.log(data)
+        })
+
+
     </script>
+
 <div align="center">
     <form method="POST" action="{{ url_for('question_page.quiz') }}">
         <button type="submit" class="btn btn-primary align-items-center">Start</button>
@@ -30,6 +39,8 @@
 </div>
         <hr>
 <h2 class="text-primary">Players who already joined:</h2>
+
+
 {% for user in usernames%}
         <p> {{user}} </p>
         {% endfor %}
