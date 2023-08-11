@@ -13,8 +13,7 @@ from .config import Config
 # importing blueprints from api directory
 from .api.game_room_page import game_room_page
 from .api.join_game_page import join_game_page
-from .api.question_page import  question_page
-
+from .api.question_page import question_page
 
 # import socket events from socket_events.py
 from .socket_events import define_socket_events
@@ -23,13 +22,16 @@ from .socket_events import define_socket_events
 load_dotenv()
 
 app = Flask(__name__)
-socketio = SocketIO(app, manage_session=False)
+socketio = SocketIO(app, manage_session=False, async_mode='eventlet')
 app.config.from_object(Config)
 
 # registering blueprint pages where url_prefix is access point to web page - http://127.0.0.1:6002/gameroom etc.
 app.register_blueprint(join_game_page, url_prefix='/')
 app.register_blueprint(game_room_page, url_prefix='/gameroompage')
 app.register_blueprint(question_page, url_prefix='/questionpage')
+
+port = 6002
+print(f"Running on http://localhost:{port}/")
 
 
 # if unable to find page, load error template
