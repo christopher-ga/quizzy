@@ -41,6 +41,10 @@ def start_timer(socketio):
         socketio.emit('room_filled', t)
 
 
+def update_users(socketio):
+    socketio.emit('update_players', {'names': list(usernames)})
+
+
 def define_socket_events(socketio):
     # connect and disconnect are reserved events detected automatically by socketio
 
@@ -59,6 +63,9 @@ def define_socket_events(socketio):
             print('2 users on now')
             eventlet.spawn(start_timer, socketio)
 
+        # update list of players on game page
+        eventlet.spawn(update_users, socketio)
+
     # when a user disconnects from the socket do the following
     @socketio.on('disconnect')
     def disconnect():
@@ -69,3 +76,4 @@ def define_socket_events(socketio):
 
         # emit a custom event to ALL connected clients along with an object containing a message
         socketio.emit('user_disconnected', {'message': f"A {deleted_user} has disconnected"})
+        eventlet.spawn(update_users, socketio)
