@@ -1,3 +1,22 @@
 .test {
     color: red;
 }
+
+.join-room {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.form-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+form {
+    width: 25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
