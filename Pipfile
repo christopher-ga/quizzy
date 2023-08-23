@@ -15,6 +15,7 @@ python-dotenv = "==0.21.0"
 sqlalchemy = "==1.4.46"
 wtforms = "==3.0.1"
 flask-socketio = "===5.3.5"
+eventlet = "~=0.33.3"
 
 [dev-packages]
 
