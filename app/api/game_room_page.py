@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 from app.socket_events import rooms
 
 
-
 # game_room blueprint for main game room of quiz game
 # currently for testing socket connections
 # look at game_room_page.html for socket example
@@ -18,5 +17,3 @@ def join_view():
         return redirect(url_for("join_game_page.join_view"))
     rooms[room]["usernames"].add(name)
     return render_template('game/game_room_page.html', usernames=rooms[room]["usernames"], code=room)
-
-

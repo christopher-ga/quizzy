@@ -28,6 +28,15 @@
             timer.innerHTML = data;
             console.log(data)
         })
+        var names_received = [];
+        socket.on('update_players', (msg) => {
+            names_received = msg.names;
+            names_string = '';
+            msg.names.forEach((name) => {
+                names_string = names_string + '<p>' + name + '</p>';
+            });
+            document.getElementById('users').innerHTML = names_string;
+        });
 
 
     </script>
@@ -39,11 +48,9 @@
     </form>
 </div>
         <hr>
-<h2 class="text-primary">Players who already joined:</h2>
+<h2 class="text-primary">Current Players:</h2>
 
+<div id="users"></div>
 
-{% for user in usernames%}
-        <p> {{user}} </p>
-        {% endfor %}
 </div>
 {% endblock %}
