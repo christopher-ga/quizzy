@@ -10,29 +10,29 @@ usernames = set()
 rooms = {} # dict of room codes containing user data
 
 
-# def handle_add_user(name, socket_id):
-#     global users, usernames  # declare users and usernames as global
+def handle_add_user(name, socket_id):
+    global users, usernames  # declare users and usernames as global
 
-#     user = {
-#         "username": name,
-#         "id": socket_id
-#     }
+    user = {
+        "username": name,
+        "id": socket_id
+    }
 
-#     usernames.add(user['username'].lower())
+    usernames.add(user['username'].lower())
 
-#     users.append(user)
+    users.append(user)
 
 
-# def handle_delete_user(socket_id):
-#     target_user = ''
+def handle_delete_user(socket_id):
+    target_user = ''
 
-#     for i, user in enumerate(users):
-#         if user['id'] == socket_id:
-#             target_user = users[i]
-#             del users[i]
+    for i, user in enumerate(users):
+        if user['id'] == socket_id:
+            target_user = users[i]
+            del users[i]
 
-#     usernames.discard(target_user['username'].lower())
-#     return target_user
+    usernames.discard(target_user['username'].lower())
+    return target_user
 
 
 def start_timer(socketio, room):
