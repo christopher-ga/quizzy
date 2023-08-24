@@ -35,12 +35,12 @@ rooms = {} # dict of room codes containing user data
 #     return target_user
 
 
-def start_timer(socketio):
+def start_timer(socketio, room):
     t = 10
     while t:
         eventlet.sleep(1)
         t -= 1
-        socketio.emit('room_filled', t)
+        socketio.emit('room_filled', t, to=room)
 
 
 def define_socket_events(socketio):
@@ -67,9 +67,9 @@ def define_socket_events(socketio):
         send({"name": name, "message": "has entered the room"}, to=room)
 
         # when there are two users in the game_room_page, start a timer
-        if len(users) == 2:
+        if len(rooms[room]["usernames"]) == 2:
             print('2 users on now')
-            eventlet.spawn(start_timer, socketio)
+            eventlet.spawn(start_timer, socketio, room)
 
     # when a user disconnects from the socket do the following
     @socketio.on('disconnect')
