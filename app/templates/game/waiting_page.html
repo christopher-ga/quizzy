@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block container %}
+
+    <div align="center">waiting room
+
+    <h3 class="text-primary">Hi {{session["name"]}}! Please wait here while others answer the question</h3>
+    <h4 class="gameStatus">Game resuming soon</h4>
+
+    <script>
+        let socket = io();
+
+        <!-- signal to server browser has entered waiting area and is waiting on server-->
+        socket.emit('ready_to_go');
+
+        //when the socket connection is established, do this for client
+        socket.on('connect', () => {
+            console.log('You just connected to the socket server!')
+        })
+
+        //when the client receives the custom event user_disconnected, do this for client
+        socket.on('user_disconnected', (data) => {
+            console.log(data.message)
+        })
+
+        //when the client receives event all_users_answered, move to next page
+        socket.on('all_users_answered', () => {
+            console.log('Server says all users have answered!')
+            console.log('You are ready to go!')
+            console.log("socket event signaled browsers to redirect")
+            window.location.href = {{ url_for('question_page.quiz') }}
+        })
+    </script>
+        <hr>
+</div>
+{% endblock %}

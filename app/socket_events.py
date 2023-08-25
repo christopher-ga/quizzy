@@ -5,6 +5,7 @@ from flask import request, session
 eventlet.monkey_patch()
 
 rooms = {} # dict of room codes containing user data
+replies = 0
 
 def start_timer(socketio, room):
     t = 10
@@ -12,6 +13,14 @@ def start_timer(socketio, room):
         eventlet.sleep(1)
         t -= 1
         socketio.emit('room_filled', t, to=room)
+
+
+# def question_timer(socketio, room):
+#     t = 10
+#     while t:
+#         eventlet.sleep(1)
+#         t -= 1
+#         socketio.emit('all_users_answered', t, to=room)
 
 
 def update_users(socketio, room):
@@ -30,12 +39,15 @@ def define_socket_events(socketio):
         room = session.get("room")
         name = session.get("name")
         if not room or not name:
+            print(f"room {room} - name: {name}")
             return
         if room not in rooms:
+            print(f"user {name} tried to access room {room}, which doesn't exist")
             leave_room(room)
             return
         join_room(room)
 
+        print(f"{name} has entered the room {room} ")
         send({"name": name, "message": "has entered the room"}, to=room)
 
         # when there are two users in the game_room_page, start a timer
@@ -54,8 +66,24 @@ def define_socket_events(socketio):
         leave_room(room)
 
         if room in rooms and name in rooms[room]["usernames"]:
-            rooms[room]["usernames"].remove(name) # remove user from room
+            pass
+            # rooms[room]["usernames"].remove(name) # remove user from room
 
         # emit a custom event to ALL connected clients along with an object containing a message
         socketio.emit('user_disconnected', {'message': f"A {name} has disconnected"}, to=room)
         eventlet.spawn(update_users, socketio, room)
+
+    @socketio.on('ready_to_go')
+    def ready():
+        global replies
+        room = session.get("room")
+
+        print(f"The active users are: {rooms[room]['usernames']}")
+        replies += 1
+        print(f"Total replies so far: {replies}")
+        if replies == len(rooms[room]['usernames']):
+            print("All users have responded")
+            # reset replies for next round
+            replies = 0
+            # Signal to waiting browsers to redirect to question page
+            socketio.emit('all_users_answered', to=room)
