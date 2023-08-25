@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
-
+from app.socket_events import rooms
 
 question_page = Blueprint('question_page', __name__)
-
 
 # Sample quiz data
 quiz_title = "My Even More Awesome Quiz"
@@ -28,7 +27,7 @@ questions = [
         ],
         "correct": "a"
     },
-{
+    {
         "id": 3,
         "question_text": "What is 3 + 2?",
         "choices": [
@@ -38,8 +37,8 @@ questions = [
 
         ],
         "correct": "c"
-},
-{
+    },
+    {
         "id": 3,
         "question_text": "How many apples did Celina eat",
         "choices": [
@@ -50,27 +49,47 @@ questions = [
 
         ],
         "correct": "a"
-}
+    }
 ]
 
-num=0
+# num is index for question
+# current_round_num tracks submitted answers per round
+num = 0
+current_round_num = 0
+
+
+@question_page.route('/waiting')
+def waiting():
+    return render_template('game/waiting_page.html')
+
+
 @question_page.route('/', methods=["POST", "GET"])
 def quiz():
     return render_template('game/question_page.html', quiz_title=quiz_title, question=questions[num])
 
+
 @question_page.route('/submit', methods=['POST'])
 def submit_quiz():
     global num
+    global current_round_num
+    room = session['room']
+
     # Process the submitted quiz and show the results
     # Add your logic here...
     # print(session["name"])
     id = str(questions[num]["id"])
     if request.form[id] == questions[num]["correct"]:
-         session["score"] += 1
+        session["score"] += 1
     print(session)
-    if num < len(questions)-1:
-        num += 1
-        return redirect(url_for('question_page.quiz'))
-    else:
-        return f"your score is {session['score']}"
+    current_round_num += 1
+    print(f"username length: {rooms[room]['usernames']}")
 
+    # if question pool exhausted, go back to main menu
+    if num == len(questions) - 1:
+        return redirect(url_for('game_room_page.join_view'))
+    elif current_round_num == len(rooms[room]["usernames"]):
+        # All users have answered. Increment num
+        num += 1
+        current_round_num = 0
+
+    return redirect(url_for('question_page.waiting'))
