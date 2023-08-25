@@ -69,6 +69,7 @@ def quiz():
 def submit_quiz():
     room = session['room']
     num = rooms[room]['num']
+    name = session["name"]
 
     # Process the submitted quiz and show the results
     # Add your logic here...
@@ -76,6 +77,7 @@ def submit_quiz():
     id = str(questions[num]["id"])
     if request.form[id] == questions[num]["correct"]:
         session["score"] += 1
+        rooms[room]['usernames'][name]['score'] += 1
     print(session)
     rooms[room]['current_round_num'] += 1
     print(f"username length: {rooms[room]['usernames']}")
