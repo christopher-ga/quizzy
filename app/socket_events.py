@@ -4,8 +4,8 @@ from flask import request, session
 
 eventlet.monkey_patch()
 
-rooms = {} # dict of room codes containing user data
-replies = 0
+rooms = {}  # dict of room codes containing user data
+
 
 def start_timer(socketio, room):
     t = 10
@@ -75,15 +75,16 @@ def define_socket_events(socketio):
 
     @socketio.on('ready_to_go')
     def ready():
-        global replies
+
         room = session.get("room")
 
         print(f"The active users are: {rooms[room]['usernames']}")
-        replies += 1
-        print(f"Total replies so far: {replies}")
-        if replies == len(rooms[room]['usernames']):
+        rooms[room]['replies'] += 1
+        print(f"Total replies so far for {room} is {rooms[room]['replies']}")
+        print(f"Rooms: {rooms}")
+        if rooms[room]['replies'] == len(rooms[room]['usernames']):
             print("All users have responded")
             # reset replies for next round
-            replies = 0
+            rooms[room]['replies'] = 0
             # Signal to waiting browsers to redirect to question page
             socketio.emit('all_users_answered', to=room)

@@ -40,6 +40,9 @@ def join_view():
         if create != False:
             room = generate_unique_code(4)
             rooms[room] = {'usernames': {name}}
+            rooms[room]['replies'] = 0
+            rooms[room]['num'] = 0
+            rooms[room]['current_round_num'] = 0
         elif code not in rooms:
             return render_template("game/join_game_page.html", error="Room does not exist.", code=code, name=name)
         elif name.lower() in rooms[room]["usernames"]:
