@@ -7,20 +7,17 @@ eventlet.monkey_patch()
 rooms = {}  # dict of room codes containing user data
 
 
+def next_page(socketio, room):
+    socketio.emit('next_page', to=room)
+
+
 def start_timer(socketio, room):
     t = 10
     while t:
         eventlet.sleep(1)
         t -= 1
         socketio.emit('room_filled', t, to=room)
-
-
-# def question_timer(socketio, room):
-#     t = 10
-#     while t:
-#         eventlet.sleep(1)
-#         t -= 1
-#         socketio.emit('all_users_answered', t, to=room)
+    eventlet.spawn(next_page, socketio, room)
 
 
 def update_users(socketio, room):
