@@ -5,52 +5,58 @@
 
     <div align="center">sockets room
 
-    <h3 class="text-primary">Welcome, {{session["name"]}}! </h3>
-    <h4>Waiting for other players</h4>
-    <h4 class="gameStatus">Game starting soon...</h4>
+        <h3 class="text-primary">Welcome, {{ session["name"] }}! </h3>
+        <h4>Waiting for other players</h4>
+        <h4 class="gameStatus">Game starting soon...</h4>
 
-    <script>
-        let socket = io();
+        <script>
+            let socket = io();
 
-        //when the socket connection is established, do this for client
-        socket.on('connect', () => {
-            console.log('You just connected to the socket server!')
-        })
+            //when the socket connection is established, do this for client
+            socket.on('connect', () => {
+                console.log('You just connected to the socket server!')
+            })
 
-        //when the client receives the custom event user_disconnected, do this for client
-        socket.on('user_disconnected', (data) => {
-            console.log(data.message)
-        })
+            //when the client receives the custom event user_disconnected, do this for client
+            socket.on('user_disconnected', (data) => {
+                console.log(data.message)
+            })
 
-        socket.on('room_filled', (data) => {
+            socket.on('room_filled', (data) => {
 
-            let timer = document.querySelector('.gameStatus')
-            timer.innerHTML = data;
-            console.log(data)
-        })
-        var names_received = [];
-        socket.on('update_players', (msg) => {
-            names_received = msg.names;
-            names_string = '';
-            msg.names.forEach((name) => {
-                names_string = names_string + '<p>' + name + '</p>';
+                let timer = document.querySelector('.gameStatus')
+                timer.innerHTML = data;
+                console.log(data)
+            })
+            var names_received = [];
+            socket.on('update_players', (msg) => {
+                names_received = msg.names;
+                names_string = '';
+                msg.names.forEach((name) => {
+                    names_string = names_string + '<p>' + name + '</p>';
+                });
+                document.getElementById('users').innerHTML = names_string;
             });
-            document.getElementById('users').innerHTML = names_string;
-        });
+
+            socket.on('next_page', () => {
+                // THIS WILL ONLY WORK WHEN RUN LOCALLY, CHANGE FOR HOSTING
+                window.location.replace('http://' + document.domain + ':' + location.port + '/questionpage/')
+            });
+            console.log(window.location)
 
 
-    </script>
+        </script>
 
-<div align="center">
-    <h2>Quiz Room: {{code}}</h2>
-    <form method="POST" action="{{ url_for('question_page.quiz') }}">
-        <button type="submit" class="btn btn-primary align-items-center">Start</button>
-    </form>
-</div>
+        <div align="center">
+            <h2>Quiz Room: {{ code }}</h2>
+            <form method="POST" action="{{ url_for('question_page.quiz') }}">
+                <button type="submit" class="btn btn-primary align-items-center">Start</button>
+            </form>
+        </div>
         <hr>
-<h2 class="text-primary">Current Players:</h2>
+        <h2 class="text-primary">Current Players:</h2>
 
-<div id="users"></div>
+        <div id="users"></div>
 
-</div>
+    </div>
 {% endblock %}
