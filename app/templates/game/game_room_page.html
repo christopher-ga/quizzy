@@ -44,6 +44,10 @@
             });
             console.log(window.location)
 
+            socket.on('reset_timer', () => {
+                let timer = document.querySelector('.gameStatus')
+                timer.innerHTML = 'Game starting soon...';
+            })
 
         </script>
 
