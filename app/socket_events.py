@@ -7,25 +7,53 @@ eventlet.monkey_patch()
 rooms = {}  # dict of room codes containing user data
 
 
+def next_page(socketio, room):
+    socketio.emit('next_page', to=room)
+
+
 def start_timer(socketio, room):
     t = 10
+
     while t:
+
+        active_users = determine_active_users(room)
+        if active_users < 2:
+            socketio.emit('reset_timer', to=room)
+            break
+
         eventlet.sleep(1)
         t -= 1
         socketio.emit('room_filled', t, to=room)
 
-
-# def question_timer(socketio, room):
-#     t = 10
-#     while t:
-#         eventlet.sleep(1)
-#         t -= 1
-#         socketio.emit('all_users_answered', t, to=room)
+    active_users = determine_active_users(room)
+    if active_users >= 2:
+        eventlet.spawn(next_page, socketio, room)
 
 
 def update_users(socketio, room):
     if room in rooms:
-        socketio.emit('update_players', {'names': list(rooms[room]["usernames"])}, to=room)
+
+        active_users = []
+
+        for name, user_data in rooms[room]['usernames'].items():
+            if user_data['active']:
+                active_users.append(name)
+
+        socketio.emit('update_players', {'names': active_users}, to=room)
+
+
+def determine_active_users(room):
+
+    if room not in rooms:
+        return 0
+
+    num_active = 0
+
+    for name, user_data in rooms[room]['usernames'].items():
+        if user_data['active']:
+            num_active += 1
+
+    return num_active
 
 
 def define_socket_events(socketio):
@@ -50,6 +78,11 @@ def define_socket_events(socketio):
         print(f"{name} has entered the room {room} ")
         send({"name": name, "message": "has entered the room"}, to=room)
 
+        # on connection, set active status to true
+        if room in rooms and name in rooms[room]["usernames"]:
+            pass
+            rooms[room]["usernames"][name]['active'] = True
+
         # when there are two users in the game_room_page, start a timer
         if len(rooms[room]["usernames"]) == 2:
             print('2 users on now')
@@ -67,6 +100,8 @@ def define_socket_events(socketio):
 
         if room in rooms and name in rooms[room]["usernames"]:
             pass
+            rooms[room]["usernames"][name]['active'] = False
+            print(rooms[room]["usernames"])
             # rooms[room]["usernames"].remove(name) # remove user from room
 
         # emit a custom event to ALL connected clients along with an object containing a message
