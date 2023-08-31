@@ -52,11 +52,6 @@ questions = [
     }
 ]
 
-# num is index for question
-# current_round_num tracks submitted answers per round
-num = 0
-current_round_num = 0
-
 
 @question_page.route('/waiting')
 def waiting():
@@ -65,14 +60,16 @@ def waiting():
 
 @question_page.route('/', methods=["POST", "GET"])
 def quiz():
+    room = session['room']
+    num = rooms[room]['num']
     return render_template('game/question_page.html', quiz_title=quiz_title, question=questions[num])
 
 
 @question_page.route('/submit', methods=['POST'])
 def submit_quiz():
-    global num
-    global current_round_num
     room = session['room']
+    num = rooms[room]['num']
+    name = session["name"]
 
     # Process the submitted quiz and show the results
     # Add your logic here...
@@ -80,16 +77,17 @@ def submit_quiz():
     id = str(questions[num]["id"])
     if request.form[id] == questions[num]["correct"]:
         session["score"] += 1
+        rooms[room]['usernames'][name]['score'] += 1
     print(session)
-    current_round_num += 1
+    rooms[room]['current_round_num'] += 1
     print(f"username length: {rooms[room]['usernames']}")
 
     # if question pool exhausted, go back to main menu
     if num == len(questions) - 1:
         return redirect(url_for('game_room_page.join_view'))
-    elif current_round_num == len(rooms[room]["usernames"]):
+    elif rooms[room]['current_round_num'] == len(rooms[room]["usernames"]):
         # All users have answered. Increment num
-        num += 1
-        current_round_num = 0
+        rooms[room]['num'] += 1
+        rooms[room]['current_round_num'] = 0
 
     return redirect(url_for('question_page.waiting'))
