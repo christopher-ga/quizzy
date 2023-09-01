@@ -38,7 +38,7 @@ questions = [
         "correct": "c",
     },
     {
-        "id": 3,
+        "id": 4,
         "question_text": "How many apples did Celina eat",
         "choices": [
             {"id": "a", "choice_text": "1"},
@@ -67,31 +67,25 @@ def quiz():
 
 @question_page.route("/submit", methods=["POST"])
 def submit_quiz():
-    print("MADE IT TO SUBMIT QUIZ")
     room = session["room"]
     num = rooms[room]["num"]
     name = session["name"]
-
+    print()
     # Process the submitted quiz and show the results
     # Add your logic here...
     # print(session["name"])
     id = str(questions[num]["id"])
-
+    print("HELLO")
     print(questions[num]["correct"])
-    if request.form[id] == questions[num]["correct"]:
+    print(request.form)
+    print(request.form.value)
+    if request.form["value"] == questions[num]["correct"]:
+        print("updating score")
         session["score"] += 1
         rooms[room]["usernames"][name]["score"] += 1
     rooms[room]["current_round_num"] += 1
     # if question pool exhausted, go back to main menu
     if num == len(questions) - 1:
         return redirect(url_for("game_room_page.join_view"))
-    elif rooms[room]["current_round_num"] == len(rooms[room]["usernames"]):
-        print("NUM GETTING INCREMENTED")
-        # All users have answered. Increment num
-        rooms[room]["num"] += 1
-        rooms[room]["current_round_num"] = 0
-    return render_template(
-        "game/question_page.html",
-        quiz_title=quiz_title,
-        question=questions[rooms[room]["num"]],
-    )
+
+    return "Blah"

@@ -8,22 +8,27 @@ rooms = {}  # dict of room codes containing user data
 
 
 def next_page(socketio, room):
-    socketio.emit('next_page', to=room)
+    socketio.emit("next_page", to=room)
+
+
+def next_question(socketio, room):
+    if rooms[room]["num"] < 3:
+        rooms[room]["num"] += 1
+        socketio.emit("next_question", to=room)
 
 
 def start_timer(socketio, room):
     t = 10
 
     while t:
-
         active_users = determine_active_users(room)
         if active_users < 2:
-            socketio.emit('reset_timer', to=room)
+            socketio.emit("reset_timer", to=room)
             break
 
         eventlet.sleep(1)
         t -= 1
-        socketio.emit('room_filled', t, to=room)
+        socketio.emit("room_filled", t, to=room)
 
     active_users = determine_active_users(room)
     if active_users >= 2:
@@ -32,25 +37,23 @@ def start_timer(socketio, room):
 
 def update_users(socketio, room):
     if room in rooms:
-
         active_users = []
 
-        for name, user_data in rooms[room]['usernames'].items():
-            if user_data['active']:
+        for name, user_data in rooms[room]["usernames"].items():
+            if user_data["active"]:
                 active_users.append(name)
 
-        socketio.emit('update_players', {'names': active_users}, to=room)
+        socketio.emit("update_players", {"names": active_users}, to=room)
 
 
 def determine_active_users(room):
-
     if room not in rooms:
         return 0
 
     num_active = 0
 
-    for name, user_data in rooms[room]['usernames'].items():
-        if user_data['active']:
+    for name, user_data in rooms[room]["usernames"].items():
+        if user_data["active"]:
             num_active += 1
 
     return num_active
@@ -62,7 +65,7 @@ def define_socket_events(socketio):
     # currently these events are received when client accesses /gameroom
 
     # when a user connects to the socket do the following
-    @socketio.on('connect')
+    @socketio.on("connect")
     def test_connect():
         room = session.get("room")
         name = session.get("name")
@@ -81,18 +84,18 @@ def define_socket_events(socketio):
         # on connection, set active status to true
         if room in rooms and name in rooms[room]["usernames"]:
             pass
-            rooms[room]["usernames"][name]['active'] = True
+            rooms[room]["usernames"][name]["active"] = True
 
         # when there are two users in the game_room_page, start a timer
         if len(rooms[room]["usernames"]) == 2:
-            print('2 users on now')
+            print("2 users on now")
             eventlet.spawn(start_timer, socketio, room)
 
         # update list of players on game page
         eventlet.spawn(update_users, socketio, room)
 
     # when a user disconnects from the socket do the following
-    @socketio.on('disconnect')
+    @socketio.on("disconnect")
     def disconnect():
         room = session.get("room")
         name = session.get("name")
@@ -100,26 +103,27 @@ def define_socket_events(socketio):
 
         if room in rooms and name in rooms[room]["usernames"]:
             pass
-            rooms[room]["usernames"][name]['active'] = False
+            rooms[room]["usernames"][name]["active"] = False
             print(rooms[room]["usernames"])
             # rooms[room]["usernames"].remove(name) # remove user from room
 
         # emit a custom event to ALL connected clients along with an object containing a message
-        socketio.emit('user_disconnected', {'message': f"A {name} has disconnected"}, to=room)
+        socketio.emit(
+            "user_disconnected", {"message": f"A {name} has disconnected"}, to=room
+        )
         eventlet.spawn(update_users, socketio, room)
 
-    @socketio.on('ready_to_go')
+    @socketio.on("ready_to_go")
     def ready():
-
         room = session.get("room")
 
         print(f"The active users are: {rooms[room]['usernames']}")
-        rooms[room]['replies'] += 1
+        rooms[room]["replies"] += 1
         print(f"Total replies so far for {room} is {rooms[room]['replies']}")
         print(f"Rooms: {rooms}")
-        if rooms[room]['replies'] == len(rooms[room]['usernames']):
+        if rooms[room]["replies"] == len(rooms[room]["usernames"]):
             print("All users have responded")
             # reset replies for next round
-            rooms[room]['replies'] = 0
+            rooms[room]["replies"] = 0
             # Signal to waiting browsers to redirect to question page
-            socketio.emit('all_users_answered', to=room)
+            eventlet.spawn(next_question, socketio, room)

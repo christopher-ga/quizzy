@@ -9,7 +9,7 @@
 {% endblock %}
 {% block container %}
 
-<form method="POST" action="{{ url_for('question_page.submit_quiz') }}">
+<form>
     <div style="display:none" id="waiting-msg" align="center">waiting room
         <h3 class="text-primary">Hi {{session["name"]}}! Please wait here while others answer the question</h3>
         <h4 class="gameStatus">Game resuming soon</h4>
@@ -35,7 +35,16 @@
     function handleButtonClick(event){
         console.log(event)
         clickedBtn = event.currentTarget;
-        event.preventDefault();
+        let data = new FormData();
+        console.log(clickedBtn);
+        console.log(clickedBtn.value);
+        data.append("name", {{ question.id }});
+        data.append("value", clickedBtn.value);
+        fetch("{{ url_for('question_page.submit_quiz') }}", {
+            "method": "POST",
+            "body": data,
+        })
+        // event.preventDefault();
         const waitingDiv = document.querySelector("#waiting-msg");
         const questionDiv = document.querySelector(".question");
         waitingDiv.style.display = "block";
@@ -52,6 +61,10 @@
     socket.on('all_users_answered', () => {
         console.log(clickedBtn);
         clickedBtn.click()
+    })
+
+    socket.on('next_question', () => {
+        window.location.href = {{ url_for('question_page.quiz') }}
     })
 </script>
 
