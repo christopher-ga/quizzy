@@ -12,7 +12,7 @@ def next_page(socketio, room):
 
 
 def start_timer(socketio, room):
-    t = 10
+    t = 3
 
     while t:
 
@@ -30,6 +30,20 @@ def start_timer(socketio, room):
         eventlet.spawn(next_page, socketio, room)
 
 
+def start_question_timer(socketio, room):
+    t = 5  # 10 seconds countdown
+
+    while t:
+        print('special timer')
+        eventlet.sleep(1)
+        t -= 1
+        socketio.emit('question_timer', {'time': t, 'room': room}, to=room)
+
+    # Timer reaches 0
+    socketio.emit('move_to_waiting', {'room': room}, to=room)
+    print('done')
+
+
 def update_users(socketio, room):
     if room in rooms:
 
@@ -43,7 +57,6 @@ def update_users(socketio, room):
 
 
 def determine_active_users(room):
-
     if room not in rooms:
         return 0
 

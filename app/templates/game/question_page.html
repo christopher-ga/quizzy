@@ -1,27 +1,53 @@
 {% extends 'base.html' %}
 {% block head %}
-<style>
+    <style>
 
-        input[type="radio"]{
-        display: none;
+        input[type="radio"] {
+            display: none;
         }
     </style>
 {% endblock %}
 {% block container %}
-        <form method="POST" action="{{ url_for('question_page.submit_quiz') }}">
-            <div class="question mb-4">
-                <h1 align="center">{{ question.question_text }}</h1>
-                <hr>
-                <div class="row">
-                    {% for choice in question.choices %}
+    <h3 id="timer">10</h3>
+
+    <form method="POST" action="{{ url_for('question_page.submit_quiz') }}">
+        <div class="question mb-4">
+            <h1 align="center">{{ question.question_text }}</h1>
+            <hr>
+            <div class="row">
+                {% for choice in question.choices %}
                     <div class="col-6 g-2">
-                            <button class="btn btn-primary btn-lg d-flex align-items-center justify-content-center w-100" type="submit" name="{{ question.id }}" value="{{ choice.id }}">
-                                {{ choice.choice_text }}</button>
+                        <button class="btn btn-primary btn-lg d-flex align-items-center justify-content-center w-100"
+                                type="submit" name="{{ question.id }}" value="{{ choice.id }}">
+                            {{ choice.choice_text }}</button>
                     </div>
-                    {% endfor %}
-                </div>
+                {% endfor %}
             </div>
-        </form>
+        </div>
+    </form>
+
+
+
+    <script>
+        let socket = io();
+        // ... existing code
+        let currentRoom = "{{ session['room'] }}";  // assuming room is stored in session
+
+        socket.on('question_timer', (data) => {
+            console.log('test')
+            if (data.room === currentRoom) {
+                // Update a timer element on the page with the remaining time
+                document.getElementById('timer').innerText = data.time;
+            }
+        });
+
+        socket.on('move_to_waiting', (data) => {
+            if (data.room === currentRoom) {
+                // Redirect to the waiting room when the timer reaches 0
+                window.location.href = "{{ url_for('question_page.waiting') }}";
+            }
+        });
+    </script>
 
 {% endblock %}
 

@@ -1,5 +1,9 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from app.socket_events import rooms
+import eventlet
+
+
+from app.socket_events import start_question_timer, rooms
 
 question_page = Blueprint('question_page', __name__)
 
@@ -60,8 +64,14 @@ def waiting():
 
 @question_page.route('/', methods=["POST", "GET"])
 def quiz():
+    from app import socketio
+
     room = session['room']
     num = rooms[room]['num']
+
+    example = session.get("room")
+
+    eventlet.spawn(start_question_timer, socketio, example)  # Call start_question_timer function
     return render_template('game/question_page.html', quiz_title=quiz_title, question=questions[num])
 
 
