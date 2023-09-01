@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from app.socket_events import rooms
 
-question_page = Blueprint('question_page', __name__)
+question_page = Blueprint("question_page", __name__)
 
 # Sample quiz data
 quiz_title = "My Even More Awesome Quiz"
@@ -15,7 +15,7 @@ questions = [
             {"id": "c", "choice_text": "5"},
             {"id": "d", "choice_text": "6"},
         ],
-        "correct": "b"
+        "correct": "b",
     },
     {
         "id": 2,
@@ -25,7 +25,7 @@ questions = [
             {"id": "b", "choice_text": "4"},
             {"id": "c", "choice_text": "5"},
         ],
-        "correct": "a"
+        "correct": "a",
     },
     {
         "id": 3,
@@ -34,9 +34,8 @@ questions = [
             {"id": "a", "choice_text": "3"},
             {"id": "b", "choice_text": "4"},
             {"id": "c", "choice_text": "5"},
-
         ],
-        "correct": "c"
+        "correct": "c",
     },
     {
         "id": 3,
@@ -46,48 +45,53 @@ questions = [
             {"id": "b", "choice_text": "Too many"},
             {"id": "c", "choice_text": "6"},
             {"id": "c", "choice_text": "5"},
-
         ],
-        "correct": "a"
-    }
+        "correct": "a",
+    },
 ]
 
 
-@question_page.route('/waiting')
+@question_page.route("/waiting")
 def waiting():
-    return render_template('game/waiting_page.html')
+    return render_template("game/waiting_page.html")
 
 
-@question_page.route('/', methods=["POST", "GET"])
+@question_page.route("/", methods=["POST", "GET"])
 def quiz():
-    room = session['room']
-    num = rooms[room]['num']
-    return render_template('game/question_page.html', quiz_title=quiz_title, question=questions[num])
+    room = session["room"]
+    num = rooms[room]["num"]
+    return render_template(
+        "game/question_page.html", quiz_title=quiz_title, question=questions[num]
+    )
 
 
-@question_page.route('/submit', methods=['POST'])
+@question_page.route("/submit", methods=["POST"])
 def submit_quiz():
-    room = session['room']
-    num = rooms[room]['num']
+    print("MADE IT TO SUBMIT QUIZ")
+    room = session["room"]
+    num = rooms[room]["num"]
     name = session["name"]
 
     # Process the submitted quiz and show the results
     # Add your logic here...
     # print(session["name"])
     id = str(questions[num]["id"])
+
+    print(questions[num]["correct"])
     if request.form[id] == questions[num]["correct"]:
         session["score"] += 1
-        rooms[room]['usernames'][name]['score'] += 1
-    print(session)
-    rooms[room]['current_round_num'] += 1
-    print(f"username length: {rooms[room]['usernames']}")
-
+        rooms[room]["usernames"][name]["score"] += 1
+    rooms[room]["current_round_num"] += 1
     # if question pool exhausted, go back to main menu
     if num == len(questions) - 1:
-        return redirect(url_for('game_room_page.join_view'))
-    elif rooms[room]['current_round_num'] == len(rooms[room]["usernames"]):
+        return redirect(url_for("game_room_page.join_view"))
+    elif rooms[room]["current_round_num"] == len(rooms[room]["usernames"]):
+        print("NUM GETTING INCREMENTED")
         # All users have answered. Increment num
-        rooms[room]['num'] += 1
-        rooms[room]['current_round_num'] = 0
-
-    return redirect(url_for('question_page.waiting'))
+        rooms[room]["num"] += 1
+        rooms[room]["current_round_num"] = 0
+    return render_template(
+        "game/question_page.html",
+        quiz_title=quiz_title,
+        question=questions[rooms[room]["num"]],
+    )
