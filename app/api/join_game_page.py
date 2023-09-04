@@ -52,8 +52,7 @@ def join_view():
             room = generate_unique_code(4)
             rooms[room] = {"usernames": {}}
             rooms[room]["usernames"] = {name: {"score": 0, "active": True}}
-            rooms[room]["replies"] = 0
-            rooms[room]["num"] = 0
+            rooms[room]["question_index"] = 0
             rooms[room]["timer_started"] = False
 
         elif code not in rooms:

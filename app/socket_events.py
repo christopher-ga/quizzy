@@ -14,10 +14,14 @@ def next_page(socketio, room):
     socketio.emit("next_page", to=room)
 
 
+def start_game(socketio, room):
+    socketio.emit("next_question", to=room)
+
+
 def next_question(socketio, room):
-    if rooms[room]["num"] < len(QUIZ["questions"]):
+    if rooms[room]["question_index"] < len(QUIZ["questions"]):
         rooms[room]["timer_started"] = False
-        rooms[room]["num"] += 1
+        rooms[room]["question_index"] += 1
         socketio.emit("next_question", to=room)
 
 
@@ -134,7 +138,7 @@ def define_socket_events(socketio):
         room = session.get("room")
         name = session.get("name")
 
-        current_question = rooms[room]["num"]
+        current_question = rooms[room]["question_index"]
         if answer == QUIZ["questions"][current_question]["correct"]:
             rooms[room]["usernames"][name]["score"] += 1
 
@@ -145,3 +149,8 @@ def define_socket_events(socketio):
         if not rooms[room]["timer_started"]:
             rooms[room]["timer_started"] = True
             eventlet.spawn(start_question_timer, socketio, room)
+
+    @socketio.on("start_game")
+    def start():
+        room = session.get("room")
+        eventlet.spawn(start_game, socketio, room)

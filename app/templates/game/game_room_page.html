@@ -9,51 +9,9 @@
         <h4>Waiting for other players</h4>
         <h4 class="gameStatus">Game starting soon...</h4>
 
-        <script>
-            let socket = io();
-
-            //when the socket connection is established, do this for client
-            socket.on('connect', () => {
-                console.log('You just connected to the socket server!')
-            })
-
-            //when the client receives the custom event user_disconnected, do this for client
-            socket.on('user_disconnected', (data) => {
-                console.log(data.message)
-            })
-
-            socket.on('room_filled', (data) => {
-
-                let timer = document.querySelector('.gameStatus')
-                timer.innerHTML = data;
-                console.log(data)
-            })
-            var names_received = [];
-            socket.on('update_players', (msg) => {
-                names_received = msg.names;
-                names_string = '';
-                msg.names.forEach((name) => {
-                    names_string = names_string + '<p>' + name + '</p>';
-                });
-                document.getElementById('users').innerHTML = names_string;
-            });
-
-            socket.on('next_page', () => {
-                // THIS WILL ONLY WORK WHEN RUN LOCALLY, CHANGE FOR HOSTING
-                window.location.replace('http://' + document.domain + ':' + location.port + '/questionpage/')
-            });
-            console.log(window.location)
-
-            socket.on('reset_timer', () => {
-                let timer = document.querySelector('.gameStatus')
-                timer.innerHTML = 'Game starting soon...';
-            })
-
-        </script>
-
         <div align="center">
             <h2>Quiz Room: {{ code }}</h2>
-            <form method="POST" action="{{ url_for('question_page.question') }}">
+            <form>
                 <button type="submit" class="btn btn-primary align-items-center">Start</button>
             </form>
         </div>
@@ -63,4 +21,55 @@
         <div id="users"></div>
 
     </div>
+    <script>
+        let socket = io();
+
+        //when the socket connection is established, do this for client
+        socket.on('connect', () => {
+            console.log('You just connected to the socket server!')
+        })
+
+        //when the client receives the custom event user_disconnected, do this for client
+        socket.on('user_disconnected', (data) => {
+            console.log(data.message)
+        })
+
+        socket.on('room_filled', (data) => {
+
+            let timer = document.querySelector('.gameStatus')
+            timer.innerHTML = data;
+            console.log(data)
+        })
+        var names_received = [];
+        socket.on('update_players', (msg) => {
+            names_received = msg.names;
+            names_string = '';
+            msg.names.forEach((name) => {
+                names_string = names_string + '<p>' + name + '</p>';
+            });
+            document.getElementById('users').innerHTML = names_string;
+        });
+
+        socket.on('next_page', () => {
+            // THIS WILL ONLY WORK WHEN RUN LOCALLY, CHANGE FOR HOSTING
+            window.location.replace('http://' + document.domain + ':' + location.port + '/questionpage/')
+        });
+        console.log(window.location)
+
+        socket.on('reset_timer', () => {
+            let timer = document.querySelector('.gameStatus')
+            timer.innerHTML = 'Game starting soon...';
+        })
+
+        const startBtn = document.querySelector(".btn")
+        startBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            socket.emit("start_game");
+        })
+
+        socket.on('next_question', () => {
+            window.location.href = {{ url_for('question_page.question') }}
+        })
+
+    </script>
 {% endblock %}
