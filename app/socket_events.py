@@ -2,6 +2,8 @@ import eventlet
 from flask_socketio import send, join_room, leave_room
 from flask import request, session
 
+from app.fixtures.question_setA import quiz
+
 eventlet.monkey_patch()
 
 rooms = {}  # dict of room codes containing user data
@@ -12,7 +14,7 @@ def next_page(socketio, room):
 
 
 def next_question(socketio, room):
-    if rooms[room]["num"] < 3:
+    if rooms[room]["num"] < len(quiz["questions"]):
         rooms[room]["num"] += 1
         socketio.emit("next_question", to=room)
 
@@ -104,7 +106,6 @@ def define_socket_events(socketio):
         if room in rooms and name in rooms[room]["usernames"]:
             pass
             rooms[room]["usernames"][name]["active"] = False
-            print(rooms[room]["usernames"])
             # rooms[room]["usernames"].remove(name) # remove user from room
 
         # emit a custom event to ALL connected clients along with an object containing a message
@@ -113,17 +114,25 @@ def define_socket_events(socketio):
         )
         eventlet.spawn(update_users, socketio, room)
 
-    @socketio.on("ready_to_go")
-    def ready():
+    @socketio.on("user_answer")
+    def ready(question, answer):
         room = session.get("room")
+        name = session.get("name")
+        print(name)
+        print(answer)
 
-        print(f"The active users are: {rooms[room]['usernames']}")
-        rooms[room]["replies"] += 1
-        print(f"Total replies so far for {room} is {rooms[room]['replies']}")
-        print(f"Rooms: {rooms}")
-        if rooms[room]["replies"] == len(rooms[room]["usernames"]):
-            print("All users have responded")
-            # reset replies for next round
-            rooms[room]["replies"] = 0
-            # Signal to waiting browsers to redirect to question page
-            eventlet.spawn(next_question, socketio, room)
+        def handle_user_response():
+            current_question = rooms[room]["num"]
+            if answer == quiz["questions"][current_question]["correct"]:
+                rooms[room]["usernames"][name]["score"] += 1
+
+        def update_game_status():
+            rooms[room]["replies"] += 1
+            if rooms[room]["replies"] == len(rooms[room]["usernames"]):
+                print("All users have responded")
+                # reset replies for next round
+                rooms[room]["replies"] = 0
+                eventlet.spawn(next_question, socketio, room)
+
+        handle_user_response()
+        update_game_status()

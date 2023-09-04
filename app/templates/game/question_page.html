@@ -30,26 +30,15 @@
 
 <script>
     let socket = io();
-    console.log("HELLO")
     let clickedBtn;
     function handleButtonClick(event){
-        console.log(event)
         clickedBtn = event.currentTarget;
-        let data = new FormData();
-        console.log(clickedBtn);
-        console.log(clickedBtn.value);
-        data.append("name", {{ question.id }});
-        data.append("value", clickedBtn.value);
-        fetch("{{ url_for('question_page.submit_quiz') }}", {
-            "method": "POST",
-            "body": data,
-        })
-        // event.preventDefault();
+        event.preventDefault();
         const waitingDiv = document.querySelector("#waiting-msg");
         const questionDiv = document.querySelector(".question");
         waitingDiv.style.display = "block";
         questionDiv.style.display = "none";
-        socket.emit('ready_to_go');
+        socket.emit('user_answer', clickedBtn.name, clickedBtn.value);
         // display loading bar or msg indicating waiting for other players
     }
 
@@ -64,7 +53,7 @@
     })
 
     socket.on('next_question', () => {
-        window.location.href = {{ url_for('question_page.quiz') }}
+        window.location.href = {{ url_for('question_page.question') }}
     })
 </script>
 
