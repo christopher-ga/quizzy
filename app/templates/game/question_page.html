@@ -8,20 +8,61 @@
     </style>
 {% endblock %}
 {% block container %}
-        <form method="POST" action="{{ url_for('question_page.submit_quiz') }}">
-            <div class="question mb-4">
-                <h1 align="center">{{ question.question_text }}</h1>
-                <hr>
-                <div class="row">
-                    {% for choice in question.choices %}
-                    <div class="col-6 g-2">
-                            <button class="btn btn-primary btn-lg d-flex align-items-center justify-content-center w-100" type="submit" name="{{ question.id }}" value="{{ choice.id }}">
-                                {{ choice.choice_text }}</button>
-                    </div>
-                    {% endfor %}
-                </div>
+
+<form>
+    <h4 class="question-timer">10</h4>
+    <div style="display:none" id="waiting-msg" align="center">waiting room
+        <h3 class="text-primary">Hi {{session["name"]}}! Please wait here while others answer the question</h3>
+        <h4 class="gameStatus">Game resuming soon</h4>
+    </div>
+    <div class="question mb-4">
+        <h1 align="center">{{ question.question_text }}</h1>
+        <hr>
+        <div class="row">
+            {% for choice in question.choices %}
+            <div class="col-6 g-2">
+                    <button class="btn btn-primary btn-lg d-flex align-items-center justify-content-center w-100" type="submit" name="{{ question.id }}" value="{{ choice.id }}">
+                        {{ choice.choice_text }}</button>
             </div>
-        </form>
+            {% endfor %}
+        </div>
+    </div>
+</form>
+
+<script>
+    let socket = io();
+    socket.emit("question_connect");
+    let clickedBtn;
+    function handleButtonClick(event){
+        clickedBtn = event.currentTarget;
+        event.preventDefault();
+        const waitingDiv = document.querySelector("#waiting-msg");
+        const questionDiv = document.querySelector(".question");
+        waitingDiv.style.display = "block";
+        questionDiv.style.display = "none";
+        socket.emit('user_answer', clickedBtn.name, clickedBtn.value);
+    }
+
+    const buttons = document.querySelectorAll(".btn");
+    buttons.forEach((button) => {
+        button.addEventListener("click", handleButtonClick, { once: true });
+    })
+
+    socket.on('all_users_answered', () => {
+        console.log(clickedBtn);
+        clickedBtn.click()
+    })
+
+    socket.on('next_question', () => {
+        window.location.href = {{ url_for('question_page.question') }}
+    })
+
+    socket.on('countdown', (data) => {
+        let timer = document.querySelector('.question-timer')
+        timer.innerHTML = data;
+        console.log(data)
+    })
+</script>
 
 {% endblock %}
 
