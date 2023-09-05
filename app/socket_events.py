@@ -19,6 +19,8 @@ def start_game(socketio, room):
 
 
 def next_question(socketio, room):
+    # reset replies to 0 for next round
+    rooms[room]["replies"] = 0
     if rooms[room]["question_index"] < len(QUIZ["questions"]):
         rooms[room]["timer_started"] = False
         rooms[room]["question_index"] += 1
@@ -28,6 +30,9 @@ def next_question(socketio, room):
 def start_question_timer(socketio, room):
     timer = 10
     while timer:
+        # if all users have replied, break timer loop to go to next question immediately
+        if rooms[room]["replies"] == len(rooms[room]["usernames"]):
+            break
         eventlet.sleep(1)
         timer -= 1
         socketio.emit("countdown", timer, to=room)
@@ -139,6 +144,8 @@ def define_socket_events(socketio):
         name = session.get("name")
 
         current_question = rooms[room]["question_index"]
+        # increase replies count by one whether user answer is correct or not
+        rooms[room]["replies"] += 1
         if answer == QUIZ["questions"][current_question]["correct"]:
             rooms[room]["usernames"][name]["score"] += 1
 

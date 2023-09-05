@@ -54,6 +54,7 @@ def join_view():
             rooms[room]["usernames"] = {name: {"score": 0, "active": True}}
             rooms[room]["question_index"] = 0
             rooms[room]["timer_started"] = False
+            rooms[room]["replies"] = 0
 
         elif code not in rooms:
             return render_template(
