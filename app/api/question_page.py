@@ -18,16 +18,10 @@ def question():
     if question_num >= len(QUIZ["questions"]):
         # redirect to scoreboard/end of game results!
         print(rooms[room]["usernames"])
-        return render_template("game/game_room_page.html")
+        return render_template("game/leaderboard.html", usernames=rooms[room]["usernames"])
     return render_template(
         "game/question_page.html",
         quiz_title=QUIZ["title"],
         question=QUIZ["questions"][question_num],
     )
 
-
-@question_page.route("/leaderboard", methods=["GET"])
-def leaderboard():
-    room = session["room"]
-    print('load leaderboard')
-    return render_template("game/leaderboard.html", usernames=rooms[room]["usernames"])
