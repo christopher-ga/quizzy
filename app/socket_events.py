@@ -8,6 +8,7 @@ rooms = {}  # dict of room codes containing user data
 
 
 def next_page(socketio, room):
+    rooms[room]['page'] = 'question_page.quiz'
     socketio.emit('next_page', to=room)
 
 
