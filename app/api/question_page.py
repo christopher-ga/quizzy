@@ -7,11 +7,6 @@ QUIZ = QUIZZES[0]
 question_page = Blueprint("question_page", __name__)
 
 
-@question_page.route("/waiting")
-def waiting():
-    return render_template("game/waiting_page.html")
-
-
 @question_page.route("/", methods=["POST", "GET"])
 def question():
     room = session["room"]
