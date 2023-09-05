@@ -11,7 +11,8 @@ QUIZ = QUIZZES[0]
 
 
 def next_page(socketio, room):
-    socketio.emit("next_page", to=room)
+    rooms[room]['page'] = 'question_page.quiz'
+    socketio.emit('next_page', to=room)
 
 
 def start_game(socketio, room):

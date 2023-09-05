@@ -25,10 +25,17 @@ def join_view():
     if request.method == "POST":
         # if name input is provided log the name, store data in session object, redirect user
         # else no name, display current template and send error to template
-        name = request.form.get("name")
-        code = request.form.get("code")
+
+        name = request.form.get('name')
+        code = request.form.get("code").upper()
         join = request.form.get("join", False)
         create = request.form.get("create", False)
+
+        if not name and not code:
+            if session.get('room') and rooms.get(session['room']):
+                return redirect(url_for(rooms[session['room']]['page']))
+            else:
+                return render_template('game/join_game_page.html', error="You have no active games!", code=code, name=name)
 
         if not name:
             return render_template(
@@ -55,6 +62,7 @@ def join_view():
             rooms[room]["question_index"] = 0
             rooms[room]["timer_started"] = False
             rooms[room]["replies"] = 0
+            rooms[room]['page'] = 'game_room_page.join_view'
 
         elif code not in rooms:
             return render_template(
