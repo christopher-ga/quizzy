@@ -65,4 +65,5 @@ def join_view():
 
         return redirect(url_for('game_room_page.join_view'))
 
-    return render_template('game/join_game_page.html')
+    num_players = len(usernames)
+    return render_template('game/join_game_page.html', num_players=num_players)
