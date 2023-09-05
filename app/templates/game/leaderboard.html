@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block head %}
+<style>
+
+    </style>
+{% endblock %}
+{% block container %}
+
+<body>
+    <div class="container mt-5" align="center">
+        <h1 class="mb-4">Quiz Leaderboard</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user, data in usernames.items() %}
+                    <tr>
+                        <td>{{ user }}</td>
+                        <td>{{ data["score"] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+<script>
+    let socket = io();
+</script>
+
+{% endblock %}
