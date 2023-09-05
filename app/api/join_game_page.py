@@ -24,7 +24,7 @@ def join_view():
 
         # if name input is provided log the name, store data in session object, redirect user
         # else no name, display current template and send error to template
-        name = request.form.get('name').lower()
+        name = request.form.get('name')
         code = request.form.get("code").upper()
         join = request.form.get("join", False)
         create = request.form.get("create", False)
@@ -59,7 +59,7 @@ def join_view():
         elif name.lower() in rooms[room]["usernames"]:
             return render_template('game/join_game_page.html', error='Name already in use in that room, please enter a different name.')
 
-        session["name"] = name.lower()
+        session["name"] = name
         session["room"] = room
         session["score"] = 0
 
