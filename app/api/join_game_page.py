@@ -55,7 +55,7 @@ def join_view():
 
         room = code
 
-        if create:
+        if create != False:
             room = generate_unique_code(4)
             rooms[room] = {"usernames": {}}
             rooms[room]["usernames"] = {name: {"score": 0, "active": True}}
