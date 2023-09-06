@@ -11,14 +11,14 @@ question_page = Blueprint("question_page", __name__)
 def question():
     room = session["room"]
     name = session["name"]
-    if room not in rooms:
-        return render_template("game/join_game_page.html")
+    if not room or room not in rooms:
+        return redirect(url_for("join_game_page.join_view"))
 
     question_num = rooms[room]["question_index"]
     if question_num >= len(QUIZ["questions"]):
         # redirect to scoreboard/end of game results!
         print(rooms[room]["usernames"])
-        return render_template("game/game_room_page.html")
+        return redirect(url_for("game_room_page.join_view"))
     return render_template(
         "game/question_page.html",
         quiz_title=QUIZ["title"],

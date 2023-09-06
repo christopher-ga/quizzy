@@ -55,14 +55,14 @@ def join_view():
 
         room = code
 
-        if create != False:
+        if create:
             room = generate_unique_code(4)
             rooms[room] = {"usernames": {}}
             rooms[room]["usernames"] = {name: {"score": 0, "active": True}}
             rooms[room]["question_index"] = 0
             rooms[room]["timer_started"] = False
             rooms[room]["replies"] = 0
-            rooms[room]['page'] = 'game_room_page.join_view'
+            rooms[room]["page"] = "game_room_page.join_view"
 
         elif code not in rooms:
             return render_template(
