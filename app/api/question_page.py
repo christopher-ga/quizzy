@@ -9,8 +9,8 @@ question_page = Blueprint("question_page", __name__)
 
 @question_page.route("/", methods=["POST", "GET"])
 def question():
-    room = session["room"]
-    name = session["name"]
+    room = session.get("room", None)
+    name = session.get("room", None)
     if not room or room not in rooms:
         return redirect(url_for("join_game_page.join_view"))
 
