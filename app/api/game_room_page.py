@@ -13,7 +13,7 @@ game_room_page = Blueprint('game_room_page', __name__)
 def join_view():
     room = session.get("room")
     name = session.get("name")
-    if room == None or name == None or room not in rooms:
+    if not room or room not in rooms:
         return redirect(url_for("join_game_page.join_view"))
     rooms[room]["usernames"].update({name: {'score': 0, 'active': True}})
     return render_template('game/game_room_page.html', usernames=rooms[room]["usernames"], code=room)
