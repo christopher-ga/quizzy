@@ -17,10 +17,10 @@
                 </tr>
             </thead>
             <tbody>
-                {% for user, data in usernames.items() %}
+                {% for name, score in user_scores %}
                     <tr>
-                        <td>{{ user }}</td>
-                        <td>{{ data["score"] }}</td>
+                        <td>{{ name }}</td>
+                        <td>{{ score }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
