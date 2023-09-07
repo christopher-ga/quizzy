@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
-from collections import OrderedDict
 from app.socket_events import rooms
 from app.fixtures.quiz import QUIZZES
 
@@ -10,10 +9,10 @@ question_page = Blueprint("question_page", __name__)
 
 @question_page.route("/", methods=["POST", "GET"])
 def question():
-    room = session["room"]
-    name = session["name"]
-    if room not in rooms:
-        return render_template("game/join_game_page.html")
+    room = session.get("room", None)
+    name = session.get("room", None)
+    if not room or room not in rooms:
+        return redirect(url_for("join_game_page.join_view"))
 
     question_num = rooms[room]["question_index"]
     if question_num >= len(QUIZ["questions"]):
@@ -31,4 +30,3 @@ def question():
         quiz_title=QUIZ["title"],
         question=QUIZ["questions"][question_num],
     )
-
