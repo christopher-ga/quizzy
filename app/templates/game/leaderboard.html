@@ -32,7 +32,7 @@
     socket.emit("leaderboard_connect");
 
     socket.on('landing_page', () => {
-        window.location.href =  '/'
+        window.location.href =  {{ url_for('question_page.question') }}
     });
 
     socket.on('countdown', (data) => {

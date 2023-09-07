@@ -54,7 +54,7 @@
     })
 
     socket.on('next_question', () => {
-        window.location.href = {{ url_for('question_page.question') }}
+        window.location.href = '/questionpage/leaderboard'
     })
 
     socket.on('countdown', (data) => {
