@@ -42,6 +42,23 @@ def start_question_timer(socketio, room):
     )  # change to post-question leaderboard page
 
 
+def landing_page(socketio, room):
+    print('landing_page')
+    socketio.emit("landing_page", to=room)
+
+
+def leaderboard_timer(socketio, room):
+    timer = 10
+    while timer:
+        print(timer)
+        eventlet.sleep(1)
+        timer -= 1
+        socketio.emit("countdown", timer, to=room)
+    eventlet.spawn(
+        landing_page, socketio, room
+    )
+
+
 def start_timer(socketio, room):
     t = 10
 
@@ -162,3 +179,11 @@ def define_socket_events(socketio):
     def start():
         room = session.get("room")
         eventlet.spawn(start_game, socketio, room)
+
+    @socketio.on("leaderboard_connect")
+    def leaderboard_connect():
+        room = session.get("room")
+        # ensure timer only starts once per leaderboard
+        if not rooms[room]["timer_started"]:
+            rooms[room]["timer_started"] = True
+            eventlet.spawn(leaderboard_timer, socketio, room)
