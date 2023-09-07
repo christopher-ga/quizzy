@@ -18,9 +18,7 @@ def question():
     if question_num >= len(QUIZ["questions"]):
         # redirect to scoreboard/end of game results!
         print(rooms[room]["usernames"])
-
         user_scores = {name: data["score"] for name, data in rooms[room]["usernames"].items()}
-
         user_scores_sorted = sorted(user_scores.items(), key=lambda kv: (kv[1], kv[0]), reverse=True)
 
         return render_template("game/leaderboard.html", user_scores=user_scores_sorted)
