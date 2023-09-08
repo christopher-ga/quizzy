@@ -24,6 +24,7 @@ def question():
         "game/question_page.html",
         quiz_title=QUIZ["title"],
         question=QUIZ["questions"][question_num],
+        correct=QUIZ["questions"][question_num]["correct"]
     )
 
 

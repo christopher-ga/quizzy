@@ -34,7 +34,11 @@
     socket.emit("question_connect");
     let clickedBtn;
 
+    let correctAnswerId = '{{correct}}'
+
+
     function handleButtonClick(event) {
+
         clickedBtn = event.currentTarget;
         event.preventDefault();
 
@@ -58,19 +62,33 @@
         button.addEventListener("click", handleButtonClick, { once: true });
     })
 
-    socket.on('all_users_answered', () => {
-        console.log(clickedBtn);
-        clickedBtn.click()
-    })
+<!--    socket.on('all_users_answered', () => {-->
+<!--        console.log(clickedBtn);-->
+<!--        clickedBtn.click()-->
+<!--    })-->
 
     socket.on('leaderboard', () => {
-        window.location.href = '/questionpage/leaderboard'
+                // Check if the clicked answer is correct
+        const isCorrect = clickedBtn.value === correctAnswerId;
+
+        // Change the color of the clicked button based on correctness
+        if (isCorrect) {
+            clickedBtn.style.backgroundColor = 'green'; // Correct answer (green)
+        } else {
+            clickedBtn.style.backgroundColor = 'red'; // Incorrect answer (red)
+            const correctButton = document.querySelector(`button[value="${correctAnswerId}"]`);
+            correctButton.style.backgroundColor = 'green';
+        }
+
+            setTimeout(() => {
+        window.location.href = '/questionpage/leaderboard';
+    }, 2000);
+
     })
 
     socket.on('countdown', (data) => {
         let timer = document.querySelector('.question-timer')
         timer.innerHTML = data;
-        console.log(data)
     })
 </script>
 
