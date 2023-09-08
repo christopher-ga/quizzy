@@ -17,14 +17,20 @@ def question():
     question_num = rooms[room]["question_index"]
     if question_num >= len(QUIZ["questions"]):
         # redirect to scoreboard/end of game results!
-        print(rooms[room]["usernames"])
-        user_scores = {name: data["score"] for name, data in rooms[room]["usernames"].items()}
-        user_scores_sorted = sorted(user_scores.items(), key=lambda kv: (kv[1], kv[0]), reverse=True)
 
-        return render_template("game/leaderboard.html", user_scores=user_scores_sorted)
+        return redirect(url_for('question_page.leaderboard'))
 
     return render_template(
         "game/question_page.html",
         quiz_title=QUIZ["title"],
         question=QUIZ["questions"][question_num],
     )
+
+
+@question_page.route("/leaderboard", methods=["POST", "GET"])
+def leaderboard():
+    room = session.get("room", None)
+    print(rooms[room]["usernames"])
+    user_scores = {name: data["score"] for name, data in rooms[room]["usernames"].items()}
+    user_scores_sorted = sorted(user_scores.items(), key=lambda kv: (kv[1], kv[0]), reverse=True)
+    return render_template("game/leaderboard.html", user_scores=user_scores_sorted)
