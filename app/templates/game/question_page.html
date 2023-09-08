@@ -17,6 +17,7 @@
     </div>
     <div class="question mb-4">
         <h1 align="center">{{ question.question_text }}</h1>
+        <h4 align="center" class="if-correct"></h4>
         <hr>
         <div class="row">
             {% for choice in question.choices %}
