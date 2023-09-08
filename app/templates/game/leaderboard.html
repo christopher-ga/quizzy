@@ -31,8 +31,12 @@
     let socket = io();
     socket.emit("leaderboard_connect");
 
-    socket.on('landing_page', () => {
+    socket.on('leaderscore', () => {
         window.location.href =  {{ url_for('question_page.question') }}
+    });
+
+    socket.on('landing_page', () => {
+        window.location.href =  '/'
     });
 
     socket.on('countdown', (data) => {

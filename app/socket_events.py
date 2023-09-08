@@ -42,20 +42,22 @@ def start_question_timer(socketio, room):
     )  # change to post-question leaderboard page
 
 
-def landing_page(socketio, room):
-    print('landing_page')
-    socketio.emit("landing_page", to=room)
+def leaderscore(socketio, room):
+    rooms[room]["timer_started"] = False
+    # if no more questions then signal browser to redirect to landing page instead of next question.
+    if rooms[room]["question_index"] == len(QUIZ["questions"]):
+        socketio.emit("landing_page", to=room)
+    socketio.emit("leaderscore", to=room)
 
 
 def leaderboard_timer(socketio, room):
-    timer = 10
+    timer = 5
     while timer:
-        print(timer)
         eventlet.sleep(1)
         timer -= 1
         socketio.emit("countdown", timer, to=room)
     eventlet.spawn(
-        landing_page, socketio, room
+        leaderscore, socketio, room
     )
 
 
