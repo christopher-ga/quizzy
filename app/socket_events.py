@@ -25,7 +25,7 @@ def next_question(socketio, room):
     if rooms[room]["question_index"] < len(QUIZ["questions"]):
         rooms[room]["timer_started"] = False
         rooms[room]["question_index"] += 1
-        socketio.emit("next_question", to=room)
+        socketio.emit("leaderboard", to=room)
 
 
 def start_question_timer(socketio, room):
@@ -40,6 +40,25 @@ def start_question_timer(socketio, room):
     eventlet.spawn(
         next_question, socketio, room
     )  # change to post-question leaderboard page
+
+
+def leaderboard(socketio, room):
+    rooms[room]["timer_started"] = False
+    # if no more questions then signal browser to redirect to landing page instead of next question.
+    if rooms[room]["question_index"] == len(QUIZ["questions"]):
+        socketio.emit("landing_page", to=room)
+    socketio.emit("next_question", to=room)
+
+
+def leaderboard_timer(socketio, room):
+    timer = 5
+    while timer:
+        eventlet.sleep(1)
+        timer -= 1
+        socketio.emit("countdown", timer, to=room)
+    eventlet.spawn(
+        leaderboard, socketio, room
+    )
 
 
 def start_timer(socketio, room):
@@ -162,3 +181,11 @@ def define_socket_events(socketio):
     def start():
         room = session.get("room")
         eventlet.spawn(start_game, socketio, room)
+
+    @socketio.on("leaderboard_connect")
+    def leaderboard_connect():
+        room = session.get("room")
+        # ensure timer only starts once per leaderboard
+        if not rooms[room]["timer_started"]:
+            rooms[room]["timer_started"] = True
+            eventlet.spawn(leaderboard_timer, socketio, room)
