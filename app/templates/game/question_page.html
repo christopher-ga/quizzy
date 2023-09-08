@@ -33,7 +33,8 @@
     let socket = io();
     socket.emit("question_connect");
     let clickedBtn;
-    function handleButtonClick(event){
+
+    function handleButtonClick(event) {
         clickedBtn = event.currentTarget;
         event.preventDefault();
         const waitingDiv = document.querySelector("#waiting-msg");
