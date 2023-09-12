@@ -43,30 +43,25 @@
         clickedBtn = event.currentTarget;
         event.preventDefault();
 
-    // Change the color of the clicked button to orange
-    clickedBtn.style.backgroundColor = 'orange';
+        // Change the color of the clicked button to orange
+        clickedBtn.style.backgroundColor = 'orange';
 
-    // Deactivate the remaining buttons
-    const buttons = document.querySelectorAll(".btn");
-    buttons.forEach((button) => {
-        if (button !== clickedBtn) {
+        // Deactivate the remaining buttons
+        const buttons = document.querySelectorAll(".btn");
+        buttons.forEach((button) => {
             button.disabled = true; // Disable the button
-            button.style.backgroundColor = 'gray'; // Change the color of inactive buttons (you can adjust this color)
-        }
-    });
+            if (button !== clickedBtn) {
+                button.style.backgroundColor = 'gray'; // Change the color of inactive buttons (you can adjust this color)
+            }
+        });
 
-    socket.emit('user_answer', clickedBtn.name, clickedBtn.value);
-}
+        socket.emit('user_answer', clickedBtn.name, clickedBtn.value);
+    }
 
     const buttons = document.querySelectorAll(".btn");
     buttons.forEach((button) => {
         button.addEventListener("click", handleButtonClick, { once: true });
     })
-
-<!--    socket.on('all_users_answered', () => {-->
-<!--        console.log(clickedBtn);-->
-<!--        clickedBtn.click()-->
-<!--    })-->
 
     socket.on('leaderboard', () => {
                 // Check if the clicked answer is correct
