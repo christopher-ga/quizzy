@@ -46,7 +46,7 @@ def leaderboard(socketio, room):
     rooms[room]["timer_started"] = False
     # if no more questions then signal browser to redirect to landing page instead of next question.
     if rooms[room]["question_index"] == len(QUIZ["questions"]):
-        socketio.emit("landing_page", to=room)
+        socketio.emit("game_over", to=room)
     socketio.emit("next_question", to=room)
 
 

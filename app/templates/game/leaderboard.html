@@ -39,6 +39,11 @@
         window.location.href =  '/'
     });
 
+    socket.on('game_over', () => {
+        window.location.href = "{{ game_over_url }}";  // Redirects to game over page
+    })
+
+
     socket.on('countdown', (data) => {
         let timer = document.querySelector('.question-timer')
         timer.innerHTML = data;
