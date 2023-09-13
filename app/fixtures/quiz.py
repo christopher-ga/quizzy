@@ -92,7 +92,7 @@ QUIZZES = [
                     {"id": "a", "choice_text": "1 quintillion bytes"},
                     {"id": "b", "choice_text": "1 trillion bytes"},
                     {"id": "c", "choice_text": "1 billion bytes"},
-                    {"id": "c", "choice_text": "1 hundred bytes"},
+                    {"id": "d", "choice_text": "1 hundred bytes"},
                 ],
                 "correct": "c",
             },
