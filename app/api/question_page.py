@@ -34,4 +34,13 @@ def leaderboard():
     print(rooms[room]["usernames"])
     user_scores = {name: data["score"] for name, data in rooms[room]["usernames"].items()}
     user_scores_sorted = sorted(user_scores.items(), key=lambda kv: (kv[1], kv[0]), reverse=True)
-    return render_template("game/leaderboard.html", user_scores=user_scores_sorted)
+    return render_template("game/leaderboard.html", user_scores=user_scores_sorted,
+                           game_over_url=url_for('question_page.game_over'))
+
+
+@question_page.route("/gameoverpage", methods=["POST", "GET"])
+def game_over():
+    room = session.get("room", None)
+    user_scores = {name: data["score"] for name, data in rooms[room]["usernames"].items()}
+    user_scores_sorted = sorted(user_scores.items(), key=lambda kv: (kv[1], kv[0]), reverse=True)[:3]  # Take the top 3
+    return render_template("game/game_over_page.html", top_scores=user_scores_sorted)
