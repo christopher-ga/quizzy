@@ -17,6 +17,7 @@
     </div>
     <div class="question mb-4">
         <h1 align="center">{{ question.question_text }}</h1>
+        <h4 align="center" class="if-correct"></h4>
         <hr>
         <div class="row">
             {% for choice in question.choices %}
@@ -33,13 +34,27 @@
     let socket = io();
     socket.emit("question_connect");
     let clickedBtn;
-    function handleButtonClick(event){
+
+    let correctAnswerId = '{{correct}}'
+
+
+    function handleButtonClick(event) {
+
         clickedBtn = event.currentTarget;
         event.preventDefault();
-        const waitingDiv = document.querySelector("#waiting-msg");
-        const questionDiv = document.querySelector(".question");
-        waitingDiv.style.display = "block";
-        questionDiv.style.display = "none";
+
+        // Change the color of the clicked button to orange
+        clickedBtn.style.backgroundColor = 'orange';
+
+        // Deactivate the remaining buttons
+        const buttons = document.querySelectorAll(".btn");
+        buttons.forEach((button) => {
+            button.disabled = true; // Disable the button
+            if (button !== clickedBtn) {
+                button.style.backgroundColor = 'gray'; // Change the color of inactive buttons (you can adjust this color)
+            }
+        });
+
         socket.emit('user_answer', clickedBtn.name, clickedBtn.value);
     }
 
@@ -48,19 +63,31 @@
         button.addEventListener("click", handleButtonClick, { once: true });
     })
 
-    socket.on('all_users_answered', () => {
-        console.log(clickedBtn);
-        clickedBtn.click()
-    })
-
     socket.on('leaderboard', () => {
-        window.location.href = '/questionpage/leaderboard'
+        let message = document.querySelector('.if-correct')
+
+        // Change the color of the clicked button based on correctness
+        if (clickedBtn !== undefined && clickedBtn.value === correctAnswerId) {
+            clickedBtn.style.backgroundColor = 'green'; // Correct answer (green)
+            message.innerHTML = "You got it right!";
+        } else {
+            if (clickedBtn !== undefined) {
+                clickedBtn.style.backgroundColor = 'FireBrick'; // Incorrect answer (red)
+            }
+            const correctButton = document.querySelector(`button[value="${correctAnswerId}"]`);
+            correctButton.style.backgroundColor = 'mediumspringgreen';
+            message.innerHTML = "You got it wrong. The correct answer was";
+        }
+
+        setTimeout(() => {
+            window.location.href = '/questionpage/leaderboard';
+        }, 2000);
+
     })
 
     socket.on('countdown', (data) => {
         let timer = document.querySelector('.question-timer')
         timer.innerHTML = data;
-        console.log(data)
     })
 </script>
 

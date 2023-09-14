@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .quiz-over {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 20px;
+            animation: scaleText 0.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes scaleText {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+            gap: 30px;
+        }
+
+        .block {
+            width: 200px;
+            height: 100px;
+            border: 1px solid lightgrey;
+            opacity: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: appear 1s forwards;
+        }
+
+        .block:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .block:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes appear {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .congrats {
+            text-align: center;
+            margin: 20px;
+        }
+
+        #go-home {
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+
+{% block container %}
+    <div class="quiz-over">Quiz Over!</div>
+    {% if top_scores %}
+        <div class="congrats">Congratulations to {{ top_scores[0][0] }} with a score of {{ top_scores[0][1] }}</div>
+    {% endif %}
+    <div class="container">
+        {% for name, score in top_scores %}
+        <div class="block">{{ name }}: {{ score }} points</div>
+        {% endfor %}
+        <button id="go-home">Join another quiz!</button>
+    </div>
+
+    <script>
+        document.getElementById('go-home').addEventListener('click', function() {
+            window.location.href = '/';
+        });
+    </script>
+{% endblock %}
