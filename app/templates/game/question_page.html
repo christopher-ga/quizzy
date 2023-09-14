@@ -64,25 +64,24 @@
     })
 
     socket.on('leaderboard', () => {
-                // Check if the clicked answer is correct
-        const isCorrect = clickedBtn.value === correctAnswerId;
         let message = document.querySelector('.if-correct')
 
         // Change the color of the clicked button based on correctness
-        if (isCorrect) {
+        if (clickedBtn !== undefined && clickedBtn.value === correctAnswerId) {
             clickedBtn.style.backgroundColor = 'green'; // Correct answer (green)
             message.innerHTML = "You got it right!";
         } else {
-            clickedBtn.style.backgroundColor = 'FireBrick'; // Incorrect answer (red)
+            if (clickedBtn !== undefined) {
+                clickedBtn.style.backgroundColor = 'FireBrick'; // Incorrect answer (red)
+            }
             const correctButton = document.querySelector(`button[value="${correctAnswerId}"]`);
             correctButton.style.backgroundColor = 'mediumspringgreen';
             message.innerHTML = "You got it wrong. The correct answer was";
-
         }
 
-            setTimeout(() => {
-        window.location.href = '/questionpage/leaderboard';
-    }, 2000);
+        setTimeout(() => {
+            window.location.href = '/questionpage/leaderboard';
+        }, 2000);
 
     })
 
