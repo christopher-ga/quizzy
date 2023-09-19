@@ -1,0 +1,14 @@
+version: '3'
+services:
+  nginx:
+    image: docker.io/nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+  quiz-app:
+    build:
+      context: ./app
+    ports:
+      - "8000:8000"
