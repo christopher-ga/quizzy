@@ -15,7 +15,7 @@ RUN apt install -y pip
 WORKDIR /root/production
 
 # Clone the Quiz app repo into the container
-RUN git clone -b docker https://github.com/christopher-ga/recurse-quiz-app.git
+RUN git https://github.com/christopher-ga/recurse-quiz-app.git
 # Change to the local repo
 WORKDIR /root/production/recurse-quiz-app
 
