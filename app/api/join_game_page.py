@@ -23,10 +23,15 @@ def generate_unique_code(length):
 def join_view():
     # receives POST request from form listed in join_game_page.html
     if request.method == "POST":
+
         # if name input is provided log the name, store data in session object, redirect user
         # else no name, display current template and send error to template
 
-        name = request.form.get('name')
+        join_name = request.form.get('join_name')
+        create_name = request.form.get('create_name')
+
+        name = join_name or create_name
+
         code = request.form.get("code").upper()
         join = request.form.get("join", False)
         create = request.form.get("create", False)
