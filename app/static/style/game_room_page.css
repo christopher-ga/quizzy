@@ -1,0 +1,120 @@
+@font-face {
+    font-family: 'Caros';
+    src: url('caros.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Dinn';
+    src: url('dinn-300.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Caros', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #d5933d;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
+    padding-top: 20px;
+}
+
+
+.header-content {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+    background-color: white;
+    padding-right: 20px;
+    border-radius: 10px;
+}
+
+.header {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-right: 50px;
+    font-family: Dinn;
+}
+
+.pin {
+    text-align: center;
+}
+
+.pin h1 {
+    font-size: 60px;
+}
+
+.footer {
+    text-align: center;
+}
+
+.footer h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.footer h3 {
+    font-size: 30px;
+    color: white;
+    padding: 5px;
+    background-color: #67070a;
+}
+
+.banner {
+    display: none;
+}
+
+.current-lobby {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 50px;
+}
+
+.current-lobby p {
+    font-size: 18px;
+    background-color: #67070a;
+    color: white;
+    padding: 3px;
+    border-radius: 5px;
+    font-family: Dinn;
+
+}
+
+@media(max-width: 768px) {
+
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+        display: none;
+    }
+
+    .banner {
+        background-color: white;
+
+        display: flex;
+        justify-content: center;
+    }
+
+    .banner-msg {
+        font-size: 26px;
+        text-align: center;
+    }
+
+}
