@@ -30,16 +30,25 @@
                     </div>
 
                     <div class="game-options">
-                        <p class="join-option">Join Quiz</p>
-                        <p class="create-option">Create Quiz</p>
+
+                        <div>
+                            <div class="button">
+                                <button class="join-option" type="button" onclick="location.href='#';">Join Quiz
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="button">
+                            <button class="create-option" type="button" onclick="location.href='#';">Create Game
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="about-button">
-                        <p class="about-option">About</p>
-                    </div>
                 </div>
+
             </div>
         </div>
+
 
 
         <section class="join-game-modal hidden">
@@ -53,7 +62,12 @@
 
                 <div class="join-room">
                     <input class="form-control" type="text" placeholder="Room Code" name="code" value="{{ code }}"/>
-                    <button type="submit" name="join" class="btn btn-primary btn-block">Join Quiz</button>
+
+
+                    <div class="button modal-button">
+                        <button class="create-option" type="submit" name="join">Join Quiz</button>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -77,8 +91,11 @@
 
                     </select>
 
-                    <button type="submit" name="create" class="btn btn-primary btn-block create-btn">Create Quiz
-                    </button>
+
+                    <div class="button modal-button">
+                        <button class="create-option" type="submit" name="create">Create Quiz</button>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -86,6 +103,12 @@
 
         <div class="overlay hidden"></div>
     </form>
+
+    <div class="floating-circle"></div>
+    <div class="floating-square"></div>
+    <div class="floating-triangle"></div>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
