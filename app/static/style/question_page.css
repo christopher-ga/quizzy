@@ -1,0 +1,96 @@
+* {
+    margin:  0;
+}
+
+@font-face {
+    font-family: 'Caros';
+    src: url('caros.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Dinn';
+    src: url('dinn-300.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.flex-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Dinn, sans-serif;
+    height: 100%;
+    background-color: #d5933d;
+    box-sizing: inherit;
+}
+
+.question {
+    display:  flex;
+    justify-content: center;
+    font-size: 25px;
+    padding-top: 30px;
+    color: white;
+    margin-bottom: 10px;
+    text-align: center;
+    margin-right: 10px;
+    margin-left: 10px;
+    font-family: Caros, serif;
+}
+
+.timer {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    max-width: min-content;
+    margin: 0 auto 20px auto;
+    font-family: Caros;
+}
+
+.choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-self: center;
+    gap: 10px;
+    height: 100%;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 25px;
+
+}
+
+.choices button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Dinn;
+    padding: 30px;
+    font-size: 2.5vw;
+
+}
+
+.choice-a {
+    background-color: #da3e44;
+}
+
+.choice-b {
+    background-color: #6969da;
+}
+
+.choice-c {
+    background-color: #a96634;
+}
+.choice-d {
+    background-color: #6e2c75;
+}
+
+
