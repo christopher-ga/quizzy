@@ -16,7 +16,8 @@ def generate_quiz(category_id):
         'type': 'multiple',
         'category': category_id
     }
-    response = requests.get("https://opentdb.com/api.php", params=parameters)
+    # no ssl verification
+    response = requests.get("https://opentdb.com/api.php", params=parameters, verify=False)
     # response.raise_for_status()
     api_response = response.json()
 
@@ -30,10 +31,10 @@ def generate_quiz(category_id):
     # Loop through the API response and convert it to QUIZZES format
     for api_question in api_response["results"]:
 
-        #sort to mix the correct answer with incorrect ones
+        # sort to mix the correct answer with incorrect ones
         options = sorted(api_question["incorrect_answers"] + [api_question["correct_answer"]])
 
-        #find the correct option
+        # find the correct option
         correct = ""
         option_id = ["a", "b", "c", "d"]
         for num, i in enumerate(options):
@@ -62,4 +63,4 @@ def generate_quiz(category_id):
 
     return quiz
 
-print(generate_quiz(9))
+# print(generate_quiz(9))
