@@ -1,26 +1,50 @@
 {% extends 'base.html' %}
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/game_room_page.css') }}">
+{% endblock %}
 
+{% block bootstrap_link %}
+
+{% endblock %}
 
 {% block container %}
 
-    <div align="center">
+    <div class="banner">
 
-        <h3 class="text-primary">Welcome, {{ session["name"] }}! </h3>
-        <h4>Waiting for other players</h4>
-        <h4 class="gameStatus">Game starting soon...</h4>
+        <p class="banner-msg">
+            Join at www.Quizzy.com with the Game Pin:<br>{{ code }}
+        </p>
 
-        <div align="center">
-            <h2>Quiz Room: {{ code }}</h2>
-            <form>
-                <button type="submit" class="btn btn-primary align-items-center">Start</button>
-            </form>
-        </div>
-        <hr>
-        <h2 class="text-primary">Current Players:</h2>
-
-        <div id="users"></div>
 
     </div>
+
+
+    <div class="container">
+
+        <div class="header-content">
+            <div class="pin">
+                <h2>Game PIN:</h2>
+                <h1>{{ code }}</h1>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h2 class="gameStatus"></h2>
+            <form>
+                <div class="button ">
+                    <button class="start" type="submit" >Start Quiz</button>
+                </div>
+            </form>
+            <h3>Waiting for players...</h3>
+
+            <div class="current-lobby">
+            </div>
+
+        </div>
+    </div>
+
+
     <script>
         let socket = io();
 
@@ -47,7 +71,7 @@
             msg.names.forEach((name) => {
                 names_string = names_string + '<p>' + name + '</p>';
             });
-            document.getElementById('users').innerHTML = names_string;
+            document.querySelector('.current-lobby').innerHTML = names_string;
         });
 
         socket.on('next_page', () => {
@@ -61,14 +85,15 @@
             timer.innerHTML = 'Game starting soon...';
         })
 
-        const startBtn = document.querySelector(".btn")
+        const startBtn = document.querySelector(".start")
         startBtn.addEventListener("click", (event) => {
             event.preventDefault();
             socket.emit("start_game");
         })
 
         socket.on('next_question', () => {
-            window.location.href = {{ url_for('question_page.question') }}
+            window.location.href =
+            {{ url_for('question_page.question') }}
         })
 
     </script>

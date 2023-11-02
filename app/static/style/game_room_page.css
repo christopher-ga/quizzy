@@ -1,0 +1,155 @@
+@font-face {
+    font-family: 'Caros';
+    src: url('caros.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Dinn';
+    src: url('dinn-300.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Caros', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #d5933d;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
+    padding-top: 20px;
+}
+
+
+.header-content {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+    text-align: center;
+    background-color: #FFA12B;
+    width: 250px;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 #FFE5C4, 0 10px 0 #915100;
+}
+
+.header {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-right: 50px;
+    font-family: Dinn;
+}
+
+.pin {
+    text-align: center;
+}
+
+.pin h1 {
+    font-size: 60px;
+}
+
+.footer {
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.footer h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.footer h3 {
+    font-size: 30px;
+    color: white;
+    padding: 5px;
+    background-color: #67070a;
+}
+
+.banner {
+    display: none;
+}
+
+.current-lobby {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 50px;
+}
+
+.current-lobby p {
+    font-size: 18px;
+    background-color: #67070a;
+    color: white;
+    padding: 3px;
+    border-radius: 5px;
+    font-family: Dinn;
+    box-shadow: inset 0 1px 0 #FFE5C4, 0 5px 0 #915100;
+
+}
+
+.button {
+    position: relative;
+    margin: 20px;
+}
+
+.button button {
+    color: white;
+    font-family: Dinn, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+    background-color: #FFA12B;
+    width: 225px;
+    padding: 20px 40px;
+    border: none;
+    cursor: pointer;
+    text-shadow: 0px 1px 0px #000;
+    filter: dropshadow(color=#000, offx=0px, offy=1px);
+    box-shadow: inset 0 1px 0 #FFE5C4, 0 10px 0 #915100;
+    border-radius: 5px;
+}
+
+.button button:active {
+    top: 10px;
+    background-color: #F78900;
+    box-shadow: inset 0 1px 0 #FFE5C4, inset 0 -3px 0 #915100;
+}
+
+.button:after {
+    content: "";
+    height: 100%;
+    width: 100%;
+    padding: 4px;
+    position: absolute;
+    bottom: -15px;
+    left: -4px;
+    z-index: -1;
+    background-color: #2B1800;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.table {
+    background: #a96634;
+    font-size: 30px;
+    --bs-table-bg: #d97f47;
+    --bs-table-border-color: white;
+}

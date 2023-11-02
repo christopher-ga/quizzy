@@ -1,38 +1,163 @@
 {% extends 'base.html' %}
 
-{# injecting styles into base.html#}
+{# Injecting styles into base.html #}
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style/join_game_page.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/join_game_page.css') }}">
 {% endblock %}
 
+{% block bootstrap_link %}
+
+{% endblock %}
 
 {% block container %}
+    <form method="POST" action="/">
 
-    <div class="form-container">
-        <h1>Welcome </h1>
-        <h3>Enter your name to join the game!</h3>
-        <p>Lost your current game? Leave the fields blank and hit enter to rejoin your last active game.</p>
-        <hr>
+        <div class="form-container">
 
-    <form method="POST" action="/" >
-        <div>
-            <input class="form-control" type="text" placeholder="Your Name" name="name">
+            <div class="background-wrapper">
+                <div class="content-wrapper">
+                    <div class="logo-container">
+                        <h1 class="logo">
+
+                            <span class="letter">Q</span>
+                            <span class="letter">U</span>
+                            <span class="letter">I</span>
+                            <span class="letter">Z</span>
+                            <span class="letter">Z</span>
+                            <span class="letter">Y</span>
+
+                        </h1>
+                    </div>
+
+                    <div class="game-options">
+
+                        <div>
+                            <div class="button">
+                                <button class="join-option" type="button" onclick="location.href='#';">Join Quiz
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="button">
+                            <button class="create-option" type="button" onclick="location.href='#';">Create Game
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
-        <div class="join-room">
-            <input class="form-control" type="text" placeholder="Room Code" name="code" value="{{code}}"/>
-            <button type="submit" name="join" class="btn btn-primary btn-block" >Join</button>
-        </div>
-        <button type="submit" name="create" class="btn btn-primary btn-block create-btn"> Create a Room</button>
+
+
+
+        <section class="join-game-modal hidden">
+            <div class="join-game-modal-content">
+
+                <p class="game-instructions">Enter your username and a game code to join an existing quiz!</p>
+
+                <div>
+                    <input class="form-control name" type="text" placeholder="Name" name="join_name">
+                </div>
+
+                <div class="join-room">
+                    <input class="form-control" type="text" placeholder="Room Code" name="code" value="{{ code }}"/>
+
+
+                    <div class="button modal-button">
+                        <button class="create-option" type="submit" name="join">Join Quiz</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="create-game-modal hidden">
+            <div class="create-game-modal-content">
+
+                <p class="game-instructions">Create a quiz room for others to play.</p>
+
+                <input class="form-control name" type="text" placeholder="Name" name="create_name">
+                <div class="create-room">
+
+                    <select class="form-control dropdown" name="quiz_name">
+
+                        <option value="" disabled selected>Choose a Quiz</option>
+                        <option value="quiz1">Quiz 1</option>
+                        <option value="quiz2">Quiz 2</option>
+                        <option value="quiz3">Quiz 3</option>
+                        <option value="quiz3">Quiz 4</option>
+                        <option value="quiz3">Quiz 5</option>
+
+                    </select>
+
+
+                    <div class="button modal-button">
+                        <button class="create-option" type="submit" name="create">Create Quiz</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <div class="overlay hidden"></div>
     </form>
-    </div>
+
+    <div class="floating-circle"></div>
+    <div class="floating-square"></div>
+    <div class="floating-triangle"></div>
 
 
-    {% if error %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
 
-        <ul>
-            <li>{{ error }}</li>
-        </ul>
+            const joinGameModal = document.querySelector('.join-game-modal');
+            const createGameModal = document.querySelector('.create-game-modal');
+            const overlay = document.querySelector('.overlay');
+            const joinGameText = document.querySelector('.join-option');
+            const createGameText = document.querySelector('.create-option');
+            const letters = document.querySelectorAll(".letter");
 
-    {% endif %}
+            function pauseAnimations() {
+                letters.forEach(letter => {
+                    letter.classList.add("pause-animation");
+                });
+            }
+
+            function resumeAnimations() {
+                letters.forEach(letter => {
+                    letter.classList.remove("pause-animation");
+                });
+            }
+
+            joinGameText.addEventListener('click', () => {
+                joinGameModal.classList.remove('hidden')
+                overlay.classList.remove('hidden')
+                pauseAnimations();
+            })
+
+            overlay.addEventListener('click', () => {
+                joinGameModal.classList.add('hidden');
+                overlay.classList.add('hidden');
+                resumeAnimations();
+            })
+
+            createGameText.addEventListener('click', () => {
+                createGameModal.classList.remove('hidden')
+                overlay.classList.remove('hidden')
+                pauseAnimations();
+            })
+
+            overlay.addEventListener('click', () => {
+                createGameModal.classList.add('hidden');
+                overlay.classList.add('hidden');
+                resumeAnimations();
+            })
+
+        })
+
+
+    </script>
 
 {% endblock %}
