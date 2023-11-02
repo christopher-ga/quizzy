@@ -1,56 +1,58 @@
 {% extends 'base.html' %}
 {% block head %}
-<style>
 
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/game_room_page.css') }}">
 {% endblock %}
+
 {% block container %}
 
-<body>
     <h4 class="question-timer">5</h4>
     <div class="container mt-5" align="center">
         <h1 class="mb-4">Quiz Leaderboard</h1>
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th>User</th>
-                    <th>Score</th>
-                </tr>
+            <tr>
+                <th>User</th>
+                <th>Score</th>
+            </tr>
             </thead>
             <tbody>
-                {% for name, score in user_scores %}
-                    <tr>
-                        <td>{{ name }}</td>
-                        <td>{{ score }}</td>
-                    </tr>
-                {% endfor %}
+            {% for name, score in user_scores %}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ score }}</td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
+    </div>
 
-<script>
-    let socket = io();
-    socket.emit("leaderboard_connect");
+        <script>
+            let socket = io();
+            socket.emit("leaderboard_connect");
 
-    socket.on('next_question', () => {
-        window.location.href =  {{ url_for('question_page.question') }}
-    });
+            socket.on('next_question', () => {
+                window.location.href =
+                {{ url_for('question_page.question') }}
+            });
 
-    socket.on('landing_page', () => {
-        window.location.href =  '/'
-    });
+            socket.on('landing_page', () => {
+                window.location.href = '/'
+            });
 
-    socket.on('game_over', () => {
-        window.location.href = "{{ game_over_url }}";  // Redirects to game over page
-    })
-
-
-    socket.on('countdown', (data) => {
-        let timer = document.querySelector('.question-timer')
-        timer.innerHTML = data;
-        console.log(data)
-        });
+            socket.on('game_over', () => {
+                window.location.href = "{{ game_over_url }}";  // Redirects to game over page
+            })
 
 
-</script>
+            socket.on('countdown', (data) => {
+                let timer = document.querySelector('.question-timer')
+                timer.innerHTML = data;
+                console.log(data)
+            });
+
+
+        </script>
 
 {% endblock %}

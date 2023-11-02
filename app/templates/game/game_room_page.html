@@ -13,7 +13,7 @@
     <div class="banner">
 
         <p class="banner-msg">
-            Join at www.Quizzy.com with the Game Pin:<br>{{ code}}
+            Join at www.Quizzy.com with the Game Pin:<br>{{ code }}
         </p>
 
 
@@ -21,20 +21,20 @@
 
 
     <div class="container">
+
         <div class="header-content">
-            <div class="header">
-                <p>Join at www.Quizzy.com</p>
-            </div>
             <div class="pin">
                 <h2>Game PIN:</h2>
                 <h1>{{ code }}</h1>
             </div>
         </div>
+
         <div class="footer">
-            <h1>Quizzy</h1>
             <h2 class="gameStatus"></h2>
             <form>
-                <button type="submit" class="btn btn-primary align-items-center">Start</button>
+                <div class="button ">
+                    <button class="start" type="submit" >Start Quiz</button>
+                </div>
             </form>
             <h3>Waiting for players...</h3>
 
@@ -85,7 +85,7 @@
             timer.innerHTML = 'Game starting soon...';
         })
 
-        const startBtn = document.querySelector(".btn")
+        const startBtn = document.querySelector(".start")
         startBtn.addEventListener("click", (event) => {
             event.preventDefault();
             socket.emit("start_game");

@@ -10,6 +10,7 @@ body {
     background-color: #EAEFF4;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 
 }
 
@@ -27,13 +28,18 @@ body {
     font-style: normal;
 }
 
+.game-options, .logo-container {
+    z-index: 100;
+}
+
 .background-wrapper {
     background-color: #d5933d;
-    box-shadow: 0 5px 20px rgba(0,0,0,.2);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .2);
     border-radius: 0 0 4px 4px;
     min-height: 100vh;
     display: flex;
     justify-content: center;
+    z-index: 2;
 }
 
 .content-wrapper {
@@ -49,7 +55,7 @@ body {
     flex-direction: row;
     font-size: 20px;
 
-    gap: 250px;
+    gap: 100px;
     margin-bottom: 100px;
 }
 
@@ -93,7 +99,7 @@ body {
     transform: translate(-50%, -50%);
     width: 80%;
     max-width: 600px;
-    background-color: #ef971b;
+    background-color: #d5933d;
     padding: 20px;
     border-radius: 10px;
     z-index: 1001;
@@ -183,12 +189,160 @@ body {
 .letter {
     display: inline-block;
     animation: bounce 1.5s ease-in-out infinite;
-
 }
 
-.letter:nth-child(1) { animation-delay: 0s; }
-.letter:nth-child(2) { animation-delay: 0.2s; }
-.letter:nth-child(3) { animation-delay: 0.4s; }
-.letter:nth-child(4) { animation-delay: 0.6s; }
-.letter:nth-child(5) { animation-delay: 0.8s; }
-.letter:nth-child(6) { animation-delay: 1.0s; }
+.letter:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.letter:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.letter:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.letter:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.letter:nth-child(5) {
+    animation-delay: 0.8s;
+}
+
+.letter:nth-child(6) {
+    animation-delay: 1.0s;
+}
+
+
+.button {
+    position: relative;
+    margin: 20px;
+}
+
+.button button {
+    color: white;
+    font-family: Dinn, sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    text-align: center;
+    background-color: #FFA12B;
+    width: 320px;
+    padding: 20px 40px;
+    border: none;
+    cursor: pointer;
+    text-shadow: 0px 1px 0px #000;
+    filter: dropshadow(color=#000, offx=0px, offy=1px);
+    box-shadow: inset 0 1px 0 #FFE5C4, 0 10px 0 #915100;
+    border-radius: 5px;
+}
+
+.button button:active {
+    top: 10px;
+    background-color: #F78900;
+    box-shadow: inset 0 1px 0 #FFE5C4, inset 0 -3px 0 #915100;
+}
+
+.button:after {
+    content: "";
+    height: 100%;
+    width: 100%;
+    padding: 4px;
+    position: absolute;
+    bottom: -15px;
+    left: -4px;
+    z-index: -1;
+    background-color: #2B1800;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.floating-circle {
+    width: 250px;
+    height: 250px;
+    background-color: rgba(164, 113, 47, 0.54);
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: -310px;
+    transform: translateY(-50%);
+    animation: floatCircle 20s linear infinite;
+}
+
+.floating-square {
+    width: 250px;
+    height: 250px;
+    background-color: rgba(164, 113, 47, 0.54);
+    position: absolute;
+    z-index: 1;
+    top: 80%;
+    left: -310px;
+    transform: translateY(-50%) rotate(36deg);
+    animation: floatSquare 30s linear infinite;
+    animation-delay: 2s;
+}
+
+.floating-triangle {
+    position: absolute;
+    z-index: 1;
+    width: 0px;
+    height: 0px;
+        top: 60%;
+    right: -310px;
+    border-style: solid;
+    border-width: 0 140px 167px 140px;
+    border-color: transparent transparent rgba(164, 113, 47, 0.54) transparent;
+    transform: rotate(34deg);
+    animation: floatTriangle 25s linear infinite;
+}
+
+@keyframes floatCircle {
+    0% {
+        top: -110px;
+        left: -310px;
+    }
+    100% {
+
+        left: 100vw;
+    }
+}
+
+@keyframes floatSquare {
+    0% {
+        left: -310px;
+    }
+    100% {
+        top: -400px;
+        left: 100vw;
+    }
+}
+
+@keyframes floatTriangle {
+    0% {
+        right: -310px;
+    }
+    100% {
+        right: 100vw;
+    }
+}
+
+
+@media (max-width: 800px) {
+    .game-options {
+        gap: 50px;
+        flex-direction: column;
+    }
+
+    .logo {
+        font-size: 9vw;
+        letter-spacing: 10px;
+    }
+
+    .modal-button button {
+        width: 150px;
+        font-size: 24px;
+    }
+}
