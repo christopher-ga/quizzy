@@ -14,9 +14,6 @@ RUN apt install -y pip
 # Create a directory for your project
 WORKDIR /root/production
 
-# cleanup older files
-RUN rm -rf recurse-quiz-app
-
 # Clone the Quiz app repo into the container (from this specific branch)
 RUN git clone --single-branch --branch api-questions https://github.com/christopher-ga/recurse-quiz-app.git
 # Change to the local repo

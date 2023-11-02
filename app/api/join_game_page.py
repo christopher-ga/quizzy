@@ -36,6 +36,7 @@ def join_view():
         code = request.form.get("code").upper()
         join = request.form.get("join", False)
         create = request.form.get("create", False)
+        category = request.form.get("quiz_category")
 
         if not name and not code:
             if session.get('room') and rooms.get(session['room']):
@@ -63,7 +64,7 @@ def join_view():
 
         if create != False:
             room = generate_unique_code(4)
-            quiz = generate_quiz(9)
+            quiz = generate_quiz(category)
             rooms[room] = {"usernames": {}}
             rooms[room]["usernames"] = {name: {"score": 0, "active": True}}
             rooms[room]["question_index"] = 0

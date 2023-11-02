@@ -45,7 +45,7 @@ def generate_quiz(category_id):
         # Create the question dictionary
         question = {
             "id": question_id_counter,
-            "question_text": html.unescape(api_question["question"])+ "xddd",
+            "question_text": html.unescape(api_question["question"]),
             "choices": [
                 {"id": "a", "choice_text": html.unescape(options[0])},
                 {"id": "b", "choice_text": html.unescape(options[1])},
