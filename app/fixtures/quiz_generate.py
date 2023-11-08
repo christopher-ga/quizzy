@@ -10,7 +10,7 @@ def generate_quiz(category_id):
         'type': 'multiple',
         'category': category_id
     }
-    # no ssl verification
+
     response = requests.get("https://opentdb.com/api.php", params=parameters)
     # response.raise_for_status()
     api_response = response.json()
@@ -22,6 +22,8 @@ def generate_quiz(category_id):
         "title": "category" + category_id + " Quiz",
         "questions": []
     }
+    option_ids = ["a", "b", "c", "d"]
+
     # Loop through the API response and convert it to QUIZZES format
     for api_question in api_response["results"]:
 
@@ -29,9 +31,6 @@ def generate_quiz(category_id):
         options = api_question["incorrect_answers"]
         correct = random.randint(0, 3)
         options.insert(correct, api_question["correct_answer"])
-        option_ids = ["a", "b", "c", "d"]
-
-        # print(options, api_question["correct_answer"], correct)
 
         # Create the question dictionary
         question = {
