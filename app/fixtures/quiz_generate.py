@@ -1,13 +1,7 @@
-# from flask import request
 import requests
 import html
-# import gevent.monkey
-# category ids
-# general knowledge  9
-# comp-sci 18
-# animals 27
-# geography 22
-# art 25
+import random
+
 
 def generate_quiz(category_id):
     parameters = {
@@ -17,7 +11,7 @@ def generate_quiz(category_id):
         'category': category_id
     }
     # no ssl verification
-    response = requests.get("https://opentdb.com/api.php", params=parameters, verify=False)
+    response = requests.get("https://opentdb.com/api.php", params=parameters)
     # response.raise_for_status()
     api_response = response.json()
 
@@ -25,7 +19,7 @@ def generate_quiz(category_id):
     question_id_counter = 1
 
     quiz = {
-        "title": "category" + " Quiz",
+        "title": "category" + category_id + " Quiz",
         "questions": []
     }
     # Loop through the API response and convert it to QUIZZES format
