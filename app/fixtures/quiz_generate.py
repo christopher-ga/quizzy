@@ -31,15 +31,12 @@ def generate_quiz(category_id):
     # Loop through the API response and convert it to QUIZZES format
     for api_question in api_response["results"]:
 
-        # sort to mix the correct answer with incorrect ones
-        options = sorted(api_question["incorrect_answers"] + [api_question["correct_answer"]])
+        # mix the correct answer with incorrect ones
+        options = api_question["incorrect_answers"]
+        correct = random.randint(0, 3)
+        options.insert(correct, api_question["correct_answer"])
+        option_ids = ["a", "b", "c", "d"]
 
-        # find the correct option
-        correct = ""
-        option_id = ["a", "b", "c", "d"]
-        for num, i in enumerate(options):
-            if i == api_question["correct_answer"]:
-                correct = option_id[num]
         # print(options, api_question["correct_answer"], correct)
 
         # Create the question dictionary
@@ -52,7 +49,7 @@ def generate_quiz(category_id):
                 {"id": "c", "choice_text": html.unescape(options[2])},
                 {"id": "d", "choice_text": html.unescape(options[3])},
             ],
-            "correct": correct,
+            "correct": option_ids[correct],
         }
 
         # Append the question to the quiz
