@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, session, url_for, redirec
 import random
 from string import ascii_uppercase
 from app.socket_events import rooms
+from app.fixtures.quiz_generate import generate_quiz
 
 # join_game blueprint for landing page of app
 # should maintain logic over joining quiz queue and redirection to game_room
@@ -35,6 +36,7 @@ def join_view():
         code = request.form.get("code").upper()
         join = request.form.get("join", False)
         create = request.form.get("create", False)
+        category = request.form.get("quiz_category")
 
         if not name and not code:
             if session.get('room') and rooms.get(session['room']):
@@ -62,12 +64,14 @@ def join_view():
 
         if create != False:
             room = generate_unique_code(4)
+            quiz = generate_quiz(category)
             rooms[room] = {"usernames": {}}
             rooms[room]["usernames"] = {name: {"score": 0, "active": True}}
             rooms[room]["question_index"] = 0
             rooms[room]["timer_started"] = False
             rooms[room]["replies"] = 0
             rooms[room]["page"] = "game_room_page.join_view"
+            rooms[room]["quiz"] = quiz
 
         elif code not in rooms:
             return render_template(

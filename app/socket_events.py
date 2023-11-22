@@ -7,7 +7,7 @@ from app.fixtures.quiz import QUIZZES
 eventlet.monkey_patch()
 
 rooms = {}  # dict of room codes containing user data
-QUIZ = QUIZZES[0]
+# QUIZ = QUIZZES[0]
 
 
 def next_page(socketio, room):
@@ -22,7 +22,7 @@ def start_game(socketio, room):
 def next_question(socketio, room):
     # reset replies to 0 for next round
     rooms[room]["replies"] = 0
-    if rooms[room]["question_index"] < len(QUIZ["questions"]):
+    if rooms[room]["question_index"] < len(rooms[room]["quiz"]["questions"]):
         rooms[room]["timer_started"] = False
         rooms[room]["question_index"] += 1
         socketio.emit("leaderboard", to=room)
@@ -45,7 +45,7 @@ def start_question_timer(socketio, room):
 def leaderboard(socketio, room):
     rooms[room]["timer_started"] = False
     # if no more questions then signal browser to redirect to landing page instead of next question.
-    if rooms[room]["question_index"] == len(QUIZ["questions"]):
+    if rooms[room]["question_index"] == len(rooms[room]["quiz"]["questions"]):
         socketio.emit("game_over", to=room)
     socketio.emit("next_question", to=room)
 
@@ -166,7 +166,7 @@ def define_socket_events(socketio):
         current_question = rooms[room]["question_index"]
         # increase replies count by one whether user answer is correct or not
         rooms[room]["replies"] += 1
-        if answer == QUIZ["questions"][current_question]["correct"]:
+        if answer == rooms[room]["quiz"]["questions"][current_question]["correct"]:
             rooms[room]["usernames"][name]["score"] += 1
 
     @socketio.on("question_connect")

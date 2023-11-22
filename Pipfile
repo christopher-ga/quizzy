@@ -16,6 +16,8 @@ sqlalchemy = "==1.4.46"
 wtforms = "==3.0.1"
 flask-socketio = "===5.3.5"
 eventlet = "~=0.33.3"
+werkzeug = "==2.2.2"
+requests = "*"
 
 [dev-packages]
 

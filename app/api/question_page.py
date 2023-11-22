@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 from app.socket_events import rooms
 from app.fixtures.quiz import QUIZZES
 
-QUIZ = QUIZZES[0]
+# QUIZ = QUIZZES[0]
 
 question_page = Blueprint("question_page", __name__)
 
@@ -15,6 +15,7 @@ def question():
         return redirect(url_for("join_game_page.join_view"))
 
     question_num = rooms[room]["question_index"]
+    QUIZ = rooms[room]["quiz"]
     if question_num >= len(QUIZ["questions"]):
         # redirect to scoreboard/end of game results!
 
