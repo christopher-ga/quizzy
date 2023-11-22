@@ -5,8 +5,8 @@ flask-migrate==4.0.2
 flask-sqlalchemy==3.0.2
 flask-wtf==1.1.1
 gunicorn==21.2.0
+httpx==0.25.1
 python-dotenv==0.21.0
-requests==2.31.0
 sqlalchemy==1.4.46
 wtforms==3.0.1
 flask_socketio===5.3.5
