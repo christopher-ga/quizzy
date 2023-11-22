@@ -1,4 +1,4 @@
-import requests
+import httpx
 import html
 import random
 
@@ -11,8 +11,9 @@ def generate_quiz(category_id):
         'category': category_id
     }
 
-    response = requests.get("https://opentdb.com/api.php", params=parameters)
-    # response.raise_for_status()
+    client = httpx.Client()
+    response = client.get("https://opentdb.com/api.php", params=parameters)
+    response.raise_for_status()
     api_response = response.json()
 
     # Initialize a question ID counter
@@ -52,5 +53,3 @@ def generate_quiz(category_id):
         question_id_counter += 1
 
     return quiz
-
-# print(generate_quiz(9))
