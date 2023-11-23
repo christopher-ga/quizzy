@@ -18,7 +18,7 @@
 
 
 .flex-wrapper {
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -52,6 +52,7 @@ body, html {
     max-width: min-content;
     margin: 0 auto 20px auto;
     font-family: Caros;
+    font-size: 20px;
 }
 
 .choices {
@@ -74,8 +75,7 @@ body, html {
     color: white;
     font-family: Dinn;
     padding: 30px;
-    font-size: 2.5vw;
-
+    font-size: 4vw;
 }
 
 .choice-a {

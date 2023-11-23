@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
-{% block bootstrap_link %}
-
-{% endblock %}
-
-
 {% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/question_page.css') }}">
     <style>
 
         input[type="radio"]{
         }
     </style>
+{% endblock %}
+
+{% block bootstrap_link %}
+
 {% endblock %}
 
 
@@ -42,6 +42,7 @@
             .choice_text }}</button>
             {% endfor %}
         </div>
+
     </div>
 </form>
 

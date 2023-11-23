@@ -11,7 +11,6 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-
 }
 
 @font-face {
@@ -137,6 +136,13 @@ body {
     border-radius: 5px;
     font-family: Dinn;
 }
+
+.dropdown, .dropdown option {
+    color: #000;
+    background-color: #fff;
+
+}
+
 
 .join-room, .create-room {
     display: flex;
